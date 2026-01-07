@@ -1,4 +1,4 @@
-# Base Savings Vault - Deployment Guide
+# BlueSavings - Deployment Guide
 
 ## 🚀 Pre-Deployment Checklist
 
@@ -16,7 +16,7 @@
 ### 3. Set Up Environment
 
 ```bash
-cd ~/base-savings-vault
+cd ~/blue-savings
 cp .env.example .env
 nano .env  # Or use your preferred editor
 ```
@@ -172,12 +172,12 @@ forge script script/Interact.s.sol:DepositScript \
 
 1. **Push to GitHub**
    ```bash
-   gh repo create base-savings-vault --public --source=. --remote=origin --push
+   gh repo create blue-savings --public --source=. --remote=origin --push
    ```
 
 2. **Share on X (Twitter)**
    ```
-   🚀 Just launched Base Savings Vault on @base!
+   🚀 Just launched BlueSavings on @base!
    
    ⏰ Time-locked savings
    🎯 Goal-based vaults
@@ -186,9 +186,9 @@ forge script script/Interact.s.sol:DepositScript \
    Help yourself save with on-chain guarantees!
    
    Live: https://basescan.org/address/0x...
-   GitHub: https://github.com/yourname/base-savings-vault
+   GitHub: https://github.com/yourname/blue-savings
    
-   #Base #DeFi #BuildOnBase
+   #Base #DeFi #BuildOnBase #BlueSavings
    ```
 
 3. **Post in Base Discord**

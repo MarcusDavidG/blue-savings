@@ -6,14 +6,14 @@ You have **~24 days** to move from rank 3355 to Top 500. Here's your action plan
 
 ### 1. Push to GitHub (15 minutes)
 ```bash
-cd ~/base-savings-vault
+cd ~/blue-savings
 
 # Create GitHub repo
-gh repo create base-savings-vault --public --source=. --remote=origin --push
+gh repo create blue-savings --public --source=. --remote=origin --push
 
 # Or manually:
 # 1. Go to github.com/new
-# 2. Create "base-savings-vault" repo
+# 2. Create "blue-savings" repo
 # 3. Follow their instructions to push
 ```
 
@@ -71,8 +71,9 @@ forge script script/Interact.s.sol:DepositScript \
 # Commit and push
 
 # Share on X (Twitter):
-"🚀 Just launched Base Savings Vault on @base!
+"🚀 Just launched BlueSavings on @base!
 
+💙 Your savings, secured on-chain
 ⏰ Time-locked savings vaults
 🎯 Goal-based savings
 💎 0.5% transparent protocol fees
@@ -80,9 +81,9 @@ forge script script/Interact.s.sol:DepositScript \
 Built with Solidity + Foundry. Fully open source!
 
 Live: https://basescan.org/address/0x...
-Code: https://github.com/YOURUSERNAME/base-savings-vault
+Code: https://github.com/YOURUSERNAME/blue-savings
 
-#BuildOnBase #Base #DeFi"
+#BuildOnBase #Base #DeFi #BlueSavings"
 ```
 
 **Share in**:

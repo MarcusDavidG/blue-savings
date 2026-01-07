@@ -1,6 +1,6 @@
-# Base Savings Vault 🏦
+# BlueSavings 💙
 
-A decentralized savings vault protocol built natively on Base. Create time-locked or goal-based savings vaults with transparent on-chain guarantees.
+A decentralized savings vault protocol built natively on Base. Create time-locked or goal-based savings vaults with transparent on-chain guarantees. BlueSavings brings the reliability of traditional savings with the transparency of blockchain.
 
 ## 🎯 Features
 
@@ -21,8 +21,8 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/base-savings-vault.git
-cd base-savings-vault
+git clone https://github.com/yourusername/blue-savings.git
+cd blue-savings
 forge install
 ```
 
