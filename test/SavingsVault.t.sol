@@ -1,0 +1,320 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import "forge-std/Test.sol";
+import "../src/SavingsVault.sol";
+
+contract SavingsVaultTest is Test {
+    SavingsVault public vault;
+    
+    address public owner = address(1);
+    address public user1 = address(2);
+    address public user2 = address(3);
+    
+    event VaultCreated(
+        uint256 indexed vaultId,
+        address indexed owner,
+        uint256 goalAmount,
+        uint256 unlockTimestamp
+    );
+    
+    event Deposited(
+        uint256 indexed vaultId,
+        address indexed depositor,
+        uint256 amount,
+        uint256 feeAmount
+    );
+    
+    event Withdrawn(
+        uint256 indexed vaultId,
+        address indexed owner,
+        uint256 amount
+    );
+    
+    function setUp() public {
+        vm.prank(owner);
+        vault = new SavingsVault();
+        
+        vm.deal(user1, 100 ether);
+        vm.deal(user2, 100 ether);
+    }
+    
+    function testCreateVaultWithTimeLock() public {
+        vm.startPrank(user1);
+        
+        uint256 unlockTime = block.timestamp + 30 days;
+        
+        vm.expectEmit(true, true, false, true);
+        emit VaultCreated(0, user1, 0, unlockTime);
+        
+        uint256 vaultId = vault.createVault(0, unlockTime);
+        
+        (address vaultOwner, , , uint256 timestamp, bool isActive, ,) = vault.getVaultDetails(vaultId);
+        
+        assertEq(vaultOwner, user1);
+        assertEq(timestamp, unlockTime);
+        assertTrue(isActive);
+        
+        vm.stopPrank();
+    }
+    
+    function testCreateVaultWithGoal() public {
+        vm.startPrank(user1);
+        
+        uint256 goalAmount = 10 ether;
+        uint256 vaultId = vault.createVault(goalAmount, 0);
+        
+        (, , uint256 goal, , bool isActive, ,) = vault.getVaultDetails(vaultId);
+        
+        assertEq(goal, goalAmount);
+        assertTrue(isActive);
+        
+        vm.stopPrank();
+    }
+    
+    function testDepositToVault() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(0, 0);
+        uint256 depositAmount = 1 ether;
+        
+        (uint256 expectedFee, uint256 expectedNet) = vault.calculateDepositFee(depositAmount);
+        
+        vm.expectEmit(true, true, false, true);
+        emit Deposited(vaultId, user1, expectedNet, expectedFee);
+        
+        vault.deposit{value: depositAmount}(vaultId);
+        
+        (, uint256 balance, , , , ,) = vault.getVaultDetails(vaultId);
+        
+        assertEq(balance, expectedNet);
+        assertEq(vault.totalFeesCollected(), expectedFee);
+        
+        vm.stopPrank();
+    }
+    
+    function testMultipleDeposits() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(0, 0);
+        
+        vault.deposit{value: 1 ether}(vaultId);
+        vault.deposit{value: 2 ether}(vaultId);
+        vault.deposit{value: 0.5 ether}(vaultId);
+        
+        (, uint256 balance, , , , ,) = vault.getVaultDetails(vaultId);
+        
+        (, uint256 totalNet) = vault.calculateDepositFee(3.5 ether);
+        
+        assertEq(balance, totalNet);
+        
+        vm.stopPrank();
+    }
+    
+    function testWithdrawAfterTimeLock() public {
+        vm.startPrank(user1);
+        
+        uint256 unlockTime = block.timestamp + 30 days;
+        uint256 vaultId = vault.createVault(0, unlockTime);
+        
+        vault.deposit{value: 1 ether}(vaultId);
+        
+        vm.expectRevert(SavingsVault.VaultLocked.selector);
+        vault.withdraw(vaultId);
+        
+        vm.warp(unlockTime);
+        
+        uint256 balanceBefore = user1.balance;
+        vault.withdraw(vaultId);
+        
+        (, , , , bool isActive, ,) = vault.getVaultDetails(vaultId);
+        
+        assertFalse(isActive);
+        assertGt(user1.balance, balanceBefore);
+        
+        vm.stopPrank();
+    }
+    
+    function testWithdrawAfterGoalReached() public {
+        vm.startPrank(user1);
+        
+        uint256 goalAmount = 5 ether;
+        uint256 vaultId = vault.createVault(goalAmount, 0);
+        
+        vault.deposit{value: 3 ether}(vaultId);
+        
+        vm.expectRevert(SavingsVault.GoalNotReached.selector);
+        vault.withdraw(vaultId);
+        
+        vault.deposit{value: 3 ether}(vaultId);
+        
+        uint256 balanceBefore = user1.balance;
+        vault.withdraw(vaultId);
+        
+        assertGt(user1.balance, balanceBefore);
+        
+        vm.stopPrank();
+    }
+    
+    function testEmergencyWithdraw() public {
+        vm.startPrank(user1);
+        
+        uint256 unlockTime = block.timestamp + 365 days;
+        uint256 vaultId = vault.createVault(0, unlockTime);
+        
+        vault.deposit{value: 5 ether}(vaultId);
+        
+        uint256 balanceBefore = user1.balance;
+        vault.emergencyWithdraw(vaultId);
+        
+        (, , , , bool isActive, ,) = vault.getVaultDetails(vaultId);
+        
+        assertFalse(isActive);
+        assertGt(user1.balance, balanceBefore);
+        
+        vm.stopPrank();
+    }
+    
+    function testOnlyVaultOwnerCanWithdraw() public {
+        vm.prank(user1);
+        uint256 vaultId = vault.createVault(0, 0);
+        
+        vm.prank(user1);
+        vault.deposit{value: 1 ether}(vaultId);
+        
+        vm.prank(user2);
+        vm.expectRevert(SavingsVault.Unauthorized.selector);
+        vault.withdraw(vaultId);
+    }
+    
+    function testOwnerCanCollectFees() public {
+        vm.prank(user1);
+        uint256 vaultId = vault.createVault(0, 0);
+        
+        vm.prank(user1);
+        vault.deposit{value: 10 ether}(vaultId);
+        
+        uint256 expectedFees = vault.totalFeesCollected();
+        
+        vm.prank(owner);
+        uint256 balanceBefore = owner.balance;
+        vault.collectFees();
+        
+        assertEq(owner.balance, balanceBefore + expectedFees);
+        assertEq(vault.totalFeesCollected(), 0);
+    }
+    
+    function testOnlyOwnerCanCollectFees() public {
+        vm.prank(user1);
+        vm.expectRevert(SavingsVault.Unauthorized.selector);
+        vault.collectFees();
+    }
+    
+    function testSetFeeBps() public {
+        vm.startPrank(owner);
+        
+        uint256 newFee = 100; // 1%
+        vault.setFeeBps(newFee);
+        
+        assertEq(vault.feeBps(), newFee);
+        
+        vm.stopPrank();
+    }
+    
+    function testCannotSetFeeTooHigh() public {
+        vm.startPrank(owner);
+        
+        vm.expectRevert(SavingsVault.InvalidFee.selector);
+        vault.setFeeBps(300); // 3% > MAX_FEE_BPS
+        
+        vm.stopPrank();
+    }
+    
+    function testGetUserVaults() public {
+        vm.startPrank(user1);
+        
+        vault.createVault(0, block.timestamp + 30 days);
+        vault.createVault(1 ether, 0);
+        vault.createVault(0, 0);
+        
+        uint256[] memory userVaults = vault.getUserVaults(user1);
+        
+        assertEq(userVaults.length, 3);
+        assertEq(userVaults[0], 0);
+        assertEq(userVaults[1], 1);
+        assertEq(userVaults[2], 2);
+        
+        vm.stopPrank();
+    }
+    
+    function testCannotDepositZero() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(0, 0);
+        
+        vm.expectRevert(SavingsVault.InvalidAmount.selector);
+        vault.deposit{value: 0}(vaultId);
+        
+        vm.stopPrank();
+    }
+    
+    function testCannotCreateVaultWithPastTimestamp() public {
+        vm.startPrank(user1);
+        
+        vm.warp(1000);
+        
+        vm.expectRevert(SavingsVault.InvalidParameters.selector);
+        vault.createVault(0, 999);
+        
+        vm.stopPrank();
+    }
+    
+    function testTransferOwnership() public {
+        vm.startPrank(owner);
+        
+        address newOwner = address(10);
+        vault.transferOwnership(newOwner);
+        
+        assertEq(vault.owner(), newOwner);
+        
+        vm.stopPrank();
+    }
+    
+    function testFuzzDeposit(uint96 amount) public {
+        vm.assume(amount > 0.001 ether && amount < 50 ether);
+        
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(0, 0);
+        
+        (uint256 expectedFee, uint256 expectedNet) = vault.calculateDepositFee(amount);
+        
+        vault.deposit{value: amount}(vaultId);
+        
+        (, uint256 balance, , , , ,) = vault.getVaultDetails(vaultId);
+        
+        assertEq(balance, expectedNet);
+        assertEq(vault.totalFeesCollected(), expectedFee);
+        
+        vm.stopPrank();
+    }
+    
+    function testCanWithdrawView() public {
+        vm.startPrank(user1);
+        
+        uint256 unlockTime = block.timestamp + 30 days;
+        uint256 vaultId = vault.createVault(0, unlockTime);
+        
+        vault.deposit{value: 1 ether}(vaultId);
+        
+        (, , , , , , bool canWithdraw) = vault.getVaultDetails(vaultId);
+        assertFalse(canWithdraw);
+        
+        vm.warp(unlockTime);
+        
+        (, , , , , , canWithdraw) = vault.getVaultDetails(vaultId);
+        assertTrue(canWithdraw);
+        
+        vm.stopPrank();
+    }
+}

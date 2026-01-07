@@ -1,0 +1,25 @@
+# Compiler files
+cache/
+out/
+artifacts/
+
+# Environment
+.env
+.env.local
+
+# Broadcast logs
+broadcast/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Foundry
+lib/
