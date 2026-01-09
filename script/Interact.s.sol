@@ -25,15 +25,17 @@ contract CreateVaultScript is Script {
         
         uint256 goalAmount = vm.envOr("GOAL_AMOUNT", uint256(0));
         uint256 unlockTimestamp = vm.envOr("UNLOCK_TIMESTAMP", uint256(0));
+        string memory metadata = vm.envOr("METADATA", string("My Vault"));
         
         vm.startBroadcast(userPrivateKey);
         
         SavingsVault vault = SavingsVault(payable(vaultAddress));
-        uint256 vaultId = vault.createVault(goalAmount, unlockTimestamp);
+        uint256 vaultId = vault.createVault(goalAmount, unlockTimestamp, metadata);
         
         console.log("Created vault ID:", vaultId);
         console.log("Goal Amount:", goalAmount);
         console.log("Unlock Timestamp:", unlockTimestamp);
+        console.log("Metadata:", metadata);
         
         vm.stopBroadcast();
     }
@@ -73,7 +75,7 @@ contract WithdrawScript is Script {
         
         SavingsVault vault = SavingsVault(payable(vaultAddress));
         
-        (,uint256 balance,,,bool isActive,,bool canWithdraw) = vault.getVaultDetails(vaultId);
+        (,uint256 balance,,,bool isActive,,,bool canWithdraw) = vault.getVaultDetails(vaultId);
         
         console.log("Vault balance:", balance);
         console.log("Is active:", isActive);
@@ -104,6 +106,7 @@ contract GetVaultDetailsScript is Script {
             uint256 unlockTimestamp,
             bool isActive,
             uint256 createdAt,
+            string memory metadata,
             bool canWithdraw
         ) = vault.getVaultDetails(vaultId);
         
@@ -114,6 +117,26 @@ contract GetVaultDetailsScript is Script {
         console.log("Unlock Timestamp:", unlockTimestamp);
         console.log("Is Active:", isActive);
         console.log("Created At:", createdAt);
+        console.log("Metadata:", metadata);
         console.log("Can Withdraw:", canWithdraw);
+    }
+}
+
+contract SetMetadataScript is Script {
+    function run() external {
+        uint256 userPrivateKey = vm.envUint("PRIVATE_KEY");
+        address vaultAddress = vm.envAddress("VAULT_ADDRESS");
+        uint256 vaultId = vm.envUint("VAULT_ID");
+        string memory metadata = vm.envString("METADATA");
+        
+        vm.startBroadcast(userPrivateKey);
+        
+        SavingsVault vault = SavingsVault(payable(vaultAddress));
+        vault.setVaultMetadata(vaultId, metadata);
+        
+        console.log("Metadata updated for vault:", vaultId);
+        console.log("New metadata:", metadata);
+        
+        vm.stopBroadcast();
     }
 }
