@@ -9,6 +9,7 @@ contract SavingsVault {
         uint256 unlockTimestamp;
         bool isActive;
         uint256 createdAt;
+        string metadata;
     }
 
     uint256 public constant MAX_FEE_BPS = 200; // 2% max
@@ -26,7 +27,13 @@ contract SavingsVault {
         uint256 indexed vaultId,
         address indexed owner,
         uint256 goalAmount,
-        uint256 unlockTimestamp
+        uint256 unlockTimestamp,
+        string metadata
+    );
+    
+    event VaultMetadataUpdated(
+        uint256 indexed vaultId,
+        string metadata
     );
     
     event Deposited(
@@ -71,7 +78,8 @@ contract SavingsVault {
     
     function createVault(
         uint256 goalAmount,
-        uint256 unlockTimestamp
+        uint256 unlockTimestamp,
+        string calldata metadata
     ) external returns (uint256) {
         if (unlockTimestamp != 0 && unlockTimestamp <= block.timestamp) {
             revert InvalidParameters();
@@ -85,12 +93,13 @@ contract SavingsVault {
             goalAmount: goalAmount,
             unlockTimestamp: unlockTimestamp,
             isActive: true,
-            createdAt: block.timestamp
+            createdAt: block.timestamp,
+            metadata: metadata
         });
         
         userVaults[msg.sender].push(vaultId);
         
-        emit VaultCreated(vaultId, msg.sender, goalAmount, unlockTimestamp);
+        emit VaultCreated(vaultId, msg.sender, goalAmount, unlockTimestamp, metadata);
         
         return vaultId;
     }
@@ -146,6 +155,12 @@ contract SavingsVault {
         emit Withdrawn(vaultId, msg.sender, amount);
     }
     
+    function setVaultMetadata(uint256 vaultId, string calldata metadata) external onlyVaultOwner(vaultId) {
+        vaults[vaultId].metadata = metadata;
+        
+        emit VaultMetadataUpdated(vaultId, metadata);
+    }
+    
     function collectFees() external onlyOwner {
         uint256 amount = totalFeesCollected;
         totalFeesCollected = 0;
@@ -185,6 +200,7 @@ contract SavingsVault {
         uint256 unlockTimestamp,
         bool isActive,
         uint256 createdAt,
+        string memory metadata,
         bool canWithdraw
     ) {
         Vault memory vault = vaults[vaultId];
@@ -200,6 +216,7 @@ contract SavingsVault {
             vault.unlockTimestamp,
             vault.isActive,
             vault.createdAt,
+            vault.metadata,
             canWithdrawNow
         );
     }
