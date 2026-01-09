@@ -1,8 +1,8 @@
-# BlueSavings 💙
+# BlueSavings
 
 A decentralized savings vault protocol built natively on Base. Create time-locked or goal-based savings vaults with transparent on-chain guarantees. BlueSavings brings the reliability of traditional savings with the transparency of blockchain.
 
-## 🎯 Features
+## Features
 
 - **Time-Locked Vaults**: Set unlock timestamps to enforce savings discipline
 - **Goal-Based Vaults**: Define savings goals that must be reached before withdrawal
@@ -11,7 +11,7 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 - **Transparent Fees**: Clear 0.5% protocol fee on deposits (adjustable by owner)
 - **Gas Optimized**: Built with modern Solidity patterns for Base's low-fee environment
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -38,7 +38,7 @@ forge build
 forge test -vv
 ```
 
-## 📝 Usage
+## Usage
 
 ### Deploy to Base
 
@@ -99,7 +99,7 @@ export VAULT_ID=0
 forge script script/Interact.s.sol:GetVaultDetailsScript --rpc-url base
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ### Core Contract: `SavingsVault.sol`
 
@@ -125,7 +125,7 @@ forge script script/Interact.s.sol:GetVaultDetailsScript --rpc-url base
 3. **Hybrid**: Both time lock AND goal requirement
 4. **Flexible**: No restrictions (can withdraw anytime)
 
-## 🔒 Security
+## Security
 
 - Comprehensive test suite (18 tests, 100% coverage)
 - Uses modern Solidity 0.8.24 (built-in overflow protection)
@@ -133,7 +133,7 @@ forge script script/Interact.s.sol:GetVaultDetailsScript --rpc-url base
 - Reentrancy protection via checks-effects-interactions pattern
 - Emergency withdrawal function for user fund safety
 
-## 📊 Protocol Fees
+## Protocol Fees
 
 - Default: **0.5%** on deposits
 - Maximum: **2%** (enforced by contract)
@@ -145,7 +145,7 @@ Fee calculation example:
 - Fee: 0.005 ETH (0.5%)
 - Net deposit: 0.995 ETH
 
-## 🛠️ Development
+## Development
 
 ### Run Tests
 
@@ -173,7 +173,7 @@ anvil
 forge script script/Deploy.s.sol:DeployScript --rpc-url http://localhost:8545 --broadcast
 ```
 
-## 📈 Use Cases
+## Use Cases
 
 - **Personal Savings**: Enforce savings discipline with time locks
 - **Goal Savings**: Save for specific purchases or milestones
@@ -181,7 +181,7 @@ forge script script/Deploy.s.sol:DeployScript --rpc-url http://localhost:8545 --
 - **DCA Strategies**: Regular deposits to accumulate over time
 - **Gift Locks**: Create future-dated gift vaults
 
-## 🌐 Base Ecosystem Integration
+## Base Ecosystem Integration
 
 This protocol is built specifically for Base:
 
@@ -190,11 +190,11 @@ This protocol is built specifically for Base:
 - Compatible with Base smart wallets
 - Verifiable on BaseScan
 
-## 📄 License
+## License
 
 MIT
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please:
 
@@ -203,17 +203,17 @@ Contributions welcome! Please:
 3. Add tests for new functionality
 4. Submit a pull request
 
-## 🔗 Links
+## Links
 
 - [Base](https://base.org)
 - [Foundry Book](https://book.getfoundry.sh/)
 - [Base Docs](https://docs.base.org)
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This is experimental software. Use at your own risk. Always verify contract addresses before interacting.
 
-## 🚀 Roadmap
+## Roadmap
 
 - [ ] Frontend UI for easy interaction
 - [ ] ERC-20 token support (USDC, DAI)
@@ -226,4 +226,4 @@ This is experimental software. Use at your own risk. Always verify contract addr
 
 ---
 
-Built with ❤️ on Base
+Built on Base
