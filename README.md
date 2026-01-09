@@ -11,6 +11,27 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 - **Transparent Fees**: Clear 0.5% protocol fee on deposits (adjustable by owner)
 - **Gas Optimized**: Built with modern Solidity patterns for Base's low-fee environment
 
+## Deployed Contracts
+
+### Base Mainnet (Production)
+- **Contract Address**: [0xf185cec4B72385CeaDE58507896E81F05E8b6c6a](https://basescan.org/address/0xf185cec4B72385CeaDE58507896E81F05E8b6c6a)
+- **Deployment Date**: 2026-01-09
+- **Version**: v1.1.0 (with vault metadata)
+- **Network**: Base (Chain ID: 8453)
+- **Status**: Active
+
+### Base Sepolia (Testnet)
+- **Contract Address**: [0x290912Be0a52414DD8a9F3Aa7a8c35ee65A4F402](https://sepolia.basescan.org/address/0x290912Be0a52414DD8a9F3Aa7a8c35ee65A4F402)
+- **Network**: Base Sepolia (Chain ID: 84532)
+- **Purpose**: Testing and development
+
+### Contract Verification
+Both contracts are verified on BaseScan. You can:
+- View source code
+- Read contract state
+- Write to contract (connect wallet)
+- View all transactions
+
 ## Quick Start
 
 ### Prerequisites
