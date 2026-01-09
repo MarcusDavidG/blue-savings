@@ -1,18 +1,15 @@
-# BlueSavings - Task List
+# BlueSavings - Technical Task List
 
-**Goal**: Climb from rank ~3355 to Top 500 on Talent.app Base Builders (January 2026)  
-**Time Remaining**: ~24 days (as of Jan 7, 2026)  
 **GitHub**: https://github.com/MarcusDavidG/blue-savings  
-**Leaderboard**: https://talent.app/~/earn/base-january
+**Last Updated**: 2026-01-07
+
+> **Workflow**: For each task, create a GitHub issue and feature branch. Work on the branch, then raise a PR that closes the issue.
 
 ---
 
 ## 📊 Current State
 
 ### ✅ Completed
-- [x] Research Top Base Builders program requirements
-- [x] Review Terms & Conditions
-- [x] Choose project type (Savings Vault)
 - [x] Set up Foundry project structure
 - [x] Write SavingsVault.sol smart contract
 - [x] Write comprehensive test suite (18 tests, 100% passing)
@@ -21,268 +18,434 @@
 - [x] Write DEPLOYMENT_GUIDE.md
 - [x] Write NEXT_STEPS.md action plan
 - [x] Rebrand to BlueSavings
-- [x] Push to GitHub (5 commits)
+- [x] Push to GitHub (6 commits)
 
 ### 🚧 Current Status
 - **Contract Status**: Not deployed
-- **User Count**: 0
-- **Transaction Count**: 0
-- **GitHub Stars**: 0
-- **Talent Rank**: ~3355
+- **Branch**: master
+- **Test Coverage**: 18 tests passing
+- **Contract Size**: ~217 lines
 
 ---
 
-## 🎯 Critical Path (Must Do This Week)
+## 🎯 Deployment Tasks (User Managed)
 
-### IMMEDIATE (Today - Next 24 Hours)
-- [ ] Set up .env file with PRIVATE_KEY and BASESCAN_API_KEY
-- [ ] Get Base Sepolia testnet ETH from faucet
-- [ ] Deploy to Base Sepolia (testnet)
-- [ ] Test interactions on Sepolia
-- [ ] Get Base mainnet ETH (~0.01 ETH for deployment)
-- [ ] Deploy SavingsVault to Base mainnet
-- [ ] Create 2-3 showcase vaults on mainnet
-- [ ] Make first deposits to generate fees
-- [ ] Update README with live contract address
-- [ ] Commit and push contract address update
+> **Note**: These require terminal commands. User will handle deployment.
 
-### PROMOTION (Day 1-2)
-- [ ] Post launch announcement on X (Twitter) with @base tag
-- [ ] Join Base Discord (https://discord.gg/buildonbase)
-- [ ] Share project in Base Discord #showcase channel
-- [ ] Post on Farcaster (if have account)
-- [ ] Connect GitHub account to talent.app (verify it's linked)
-- [ ] Connect deployed wallet to talent.app
-- [ ] Check leaderboard for initial tracking
-
----
-
-## 📅 Week 1 Goals (Days 1-7)
-
-### Development
-- [ ] Add vault metadata/descriptions feature
-- [ ] Add event emission for better tracking
-- [ ] Improve gas optimization
-- [ ] Add more test scenarios
-- [ ] Create basic usage scripts/examples
-
-### User Acquisition
-- [ ] Get 5-10 real users to create vaults
-- [ ] Reach 50+ transactions
-- [ ] Generate 0.01+ ETH in protocol fees
-- [ ] Engage in Base Discord daily
-- [ ] Share daily progress updates on X
-
-### GitHub Activity
-- [ ] Commit daily (even small improvements)
-- [ ] Add code comments/documentation
-- [ ] Create CONTRIBUTING.md
-- [ ] Add issue templates
-- [ ] Reach 5+ GitHub stars
-
----
-
-## 📅 Week 2 Goals (Days 8-14)
-
-### Major Feature Addition (Pick 1)
-- [ ] Option A: Add ERC-20 token support (USDC, DAI)
-- [ ] Option B: Create basic frontend UI
-- [ ] Option C: Add referral system
-- [ ] Option D: Add vault templates feature
-
-### Milestones
-- [ ] 20+ unique users
-- [ ] 200+ transactions
-- [ ] Move into Top 2000 on leaderboard
-- [ ] Get featured/mentioned in Base community
-- [ ] 10+ GitHub stars
-
-### Community
-- [ ] Help 2-3 other Base builders
-- [ ] Contribute to 1 other Base ecosystem repo
-- [ ] Write blog post about building on Base
-- [ ] Share technical insights on X
-
----
-
-## 📅 Week 3 Goals (Days 15-21)
-
-### Advanced Features (Pick 1-2)
-- [ ] Yield integration (Aave on Base)
-- [ ] Recurring deposits/automation
-- [ ] Social features (vault sharing, leaderboards)
-- [ ] Multi-sig vault support
-- [ ] NFT vault receipts
-
-### Milestones
-- [ ] 50+ unique users
-- [ ] 500+ transactions
-- [ ] Move into Top 1000 on leaderboard
-- [ ] Regular community engagement
-- [ ] 25+ GitHub stars
-
-### Marketing Push
-- [ ] Run small campaign/contest
-- [ ] Partner with another Base project
-- [ ] Create tutorial video or thread
-- [ ] Get mentioned by Base official channels
-
----
-
-## 📅 Week 4 Goals (Days 22-31)
-
-### Final Push
-- [ ] Polish all features and documentation
-- [ ] Fix any reported bugs
-- [ ] Optimize user experience
-- [ ] Scale user acquisition efforts
-- [ ] Final marketing campaign
-
-### Target Metrics
-- [ ] **Break into Top 500!** 🎯
-- [ ] 100+ unique users
-- [ ] 1000+ transactions
-- [ ] Strong community presence
-- [ ] 50+ GitHub stars
-
----
-
-## 🔧 Technical Backlog
-
-### High Priority
-- [ ] Add emergency pause mechanism
-- [ ] Implement event indexing/subgraph
-- [ ] Add comprehensive error messages
-- [ ] Create interaction examples in README
-
-### Medium Priority
-- [ ] Add vault search/filter functionality
-- [ ] Create fee calculator utility
-- [ ] Add withdrawal notifications
-- [ ] Implement vault migration feature
-
-### Low Priority / Nice to Have
-- [ ] Mobile PWA interface
-- [ ] Farcaster frame integration
-- [ ] Cross-chain support (Base + Optimism)
-- [ ] DAO governance for protocol parameters
-
----
-
-## 📈 Tracking Metrics
-
-### Contract Metrics (Check Daily)
+### Pre-Deployment Setup
 ```bash
-# Total vaults created
-cast call $VAULT_ADDRESS "vaultCounter()(uint256)" --rpc-url base
+# 1. Set up environment
+cd ~/blue-savings
+cp .env.example .env
+nano .env  # Add PRIVATE_KEY and BASESCAN_API_KEY
 
-# Total fees collected
-cast call $VAULT_ADDRESS "totalFeesCollected()(uint256)" --rpc-url base
-
-# Check on BaseScan
-# https://basescan.org/address/0x...
+# 2. Get test ETH
+# Visit: https://www.coinbase.com/faucets/base-ethereum-goerli-faucet
 ```
 
-### GitHub Metrics
-- [ ] Stars: Target 50+ by end of month
-- [ ] Forks: Target 10+ by end of month
-- [ ] Daily commits: 3-5/day average
-- [ ] Contributors: Get 1-2 external contributors
+### Testnet Deployment (Base Sepolia)
+```bash
+# Run tests first
+forge test -vv
 
-### Community Metrics
-- [ ] X/Twitter followers increase
-- [ ] Discord mentions/engagement
-- [ ] User testimonials collected
-- [ ] Other projects mentioning BlueSavings
+# Deploy to Sepolia
+forge script script/Deploy.s.sol:DeployScript \
+  --rpc-url base_sepolia \
+  --broadcast \
+  --verify
 
-### Talent.app Leaderboard
-- [ ] Week 1: Break into Top 3000
-- [ ] Week 2: Break into Top 2000
-- [ ] Week 3: Break into Top 1000
-- [ ] Week 4: Break into Top 500 🎯
+# Note the deployed address!
+```
 
----
+### Mainnet Deployment (Base)
+```bash
+# Deploy to Base mainnet
+forge script script/Deploy.s.sol:DeployScript \
+  --rpc-url base \
+  --broadcast \
+  --verify
 
-## 💡 Future Ideas (Post-Launch)
+# Save contract address
+echo "VAULT_ADDRESS=0x..." >> .env
+```
 
-### Product Enhancements
-- [ ] Savings goals with milestones
-- [ ] Group savings (family/team vaults)
-- [ ] Automated DCA (dollar-cost averaging)
-- [ ] Savings challenges/gamification
-- [ ] Integration with Base Name Service
-
-### Business Development
-- [ ] Partner with other Base DeFi protocols
-- [ ] Create savings products for DAOs
-- [ ] Launch on other chains (Optimism, Arbitrum)
-- [ ] Add institutional features
-
-### Marketing & Growth
-- [ ] Launch referral rewards program
-- [ ] Create ambassador program
-- [ ] Run savings challenges with prizes
-- [ ] Sponsor Base ecosystem events
+### Post-Deployment
+- [ ] User will create issue to update README with contract address
+- [ ] User will test contract interactions on-chain
 
 ---
 
-## 🚨 Blockers / Issues
+## 🔧 Technical Backlog (Development Tasks)
 
-_Track any blockers or issues here:_
+### High Priority - Week 1
 
-- None currently
+#### Issue #1: Add GitHub Issue Templates
+**Branch**: `feature/github-templates`
+**Files to create**:
+- `.github/ISSUE_TEMPLATE/bug_report.md`
+- `.github/ISSUE_TEMPLATE/feature_request.md`
+- `.github/PULL_REQUEST_TEMPLATE.md`
+
+#### Issue #2: Add Vault Metadata Feature
+**Branch**: `feature/vault-metadata`
+**Changes**:
+- Add `metadata` field to Vault struct (string)
+- Update `createVault()` to accept metadata parameter
+- Add `setVaultMetadata()` function
+- Update tests
+- Update deployment scripts
+
+#### Issue #3: Gas Optimization Pass
+**Branch**: `optimization/gas-improvements`
+**Focus**:
+- Review storage patterns
+- Optimize loops if any
+- Pack struct variables efficiently
+- Add gas report to CI
+- Document gas costs
+
+#### Issue #4: Add CONTRIBUTING.md
+**Branch**: `docs/contributing-guide`
+**Content**:
+- Development setup instructions
+- Branching strategy
+- PR guidelines
+- Testing requirements
+- Code style guide
+
+#### Issue #5: Enhanced Event Emissions
+**Branch**: `feature/enhanced-events`
+**Changes**:
+- Add indexed parameters for better filtering
+- Add VaultMetadataUpdated event
+- Add comprehensive event docs
+- Update tests to verify events
+
+---
+
+### Medium Priority - Week 2
+
+#### Issue #6: ERC-20 Token Support
+**Branch**: `feature/erc20-support`
+**Changes**:
+- Add ERC20 interface imports
+- Modify Vault struct to support token address
+- Update deposit/withdraw for ERC20
+- Add token allowance checks
+- Support both ETH and ERC20 (USDC, DAI, USDT on Base)
+- Comprehensive tests for token vaults
+- Update scripts for token interactions
+
+**Sub-tasks**:
+- [ ] Design token vault architecture
+- [ ] Implement token deposit logic
+- [ ] Implement token withdrawal logic
+- [ ] Add token balance tracking
+- [ ] Test with mock ERC20
+- [ ] Test with Base testnet tokens
+- [ ] Update documentation
+
+#### Issue #7: Vault Templates System
+**Branch**: `feature/vault-templates`
+**Changes**:
+- Create VaultTemplate struct
+- Add template registry
+- Predefined templates (30-day, 90-day, 1-year, goal-based)
+- Function to create vault from template
+- Tests for template system
+- Update deployment scripts
+
+#### Issue #8: Emergency Pause Mechanism
+**Branch**: `feature/emergency-pause`
+**Changes**:
+- Add Pausable functionality
+- Owner can pause/unpause contract
+- Deposits/withdrawals blocked when paused
+- Emergency withdrawals still work
+- Add tests for pause scenarios
+- Update documentation
+
+#### Issue #9: Batch Operations Support
+**Branch**: `feature/batch-operations`
+**Changes**:
+- Add batchCreateVaults function
+- Add batchDeposit function
+- Gas optimization for batch ops
+- Tests for batch operations
+- Update scripts
+
+### Code Quality & Infrastructure
+
+#### Issue #10: Add CI/CD Pipeline
+**Branch**: `ci/github-actions`
+**Files**:
+- `.github/workflows/test.yml` - Run tests on PR
+- `.github/workflows/lint.yml` - Solidity linting
+- `.github/workflows/coverage.yml` - Coverage reports
+
+#### Issue #11: Add Solidity Coverage
+**Branch**: `test/coverage-setup`
+**Changes**:
+- Configure forge coverage
+- Add coverage badge to README
+- Set coverage thresholds
+- Document uncovered areas
+
+#### Issue #12: Add NatSpec Documentation
+**Branch**: `docs/natspec`
+**Changes**:
+- Add comprehensive NatSpec to all functions
+- Document all events and errors
+- Add contract-level documentation
+- Generate docs with forge doc
+
+---
+
+### Advanced Features - Week 3
+
+#### Issue #13: Yield Integration (Aave on Base)
+**Branch**: `feature/yield-integration`
+**Changes**:
+- Research Aave V3 on Base
+- Add yield strategy contracts
+- Optional yield generation for vaults
+- Yield claiming mechanism
+- Comprehensive tests
+- Update documentation
+
+#### Issue #14: Referral System
+**Branch**: `feature/referral-system`
+**Changes**:
+- Add referral tracking
+- Referral code generation
+- Referral rewards (fee sharing)
+- ReferralManager contract
+- Tests for referral logic
+- Update scripts
+
+#### Issue #15: Multi-Signature Vault Support
+**Branch**: `feature/multisig-vaults`
+**Changes**:
+- Add multi-owner vault type
+- Signature threshold logic
+- Approval workflow for withdrawals
+- Tests for multisig scenarios
+- Update documentation
+
+#### Issue #16: NFT Vault Receipts
+**Branch**: `feature/nft-receipts`
+**Changes**:
+- ERC-721 receipt tokens
+- Mint on vault creation
+- Burn on vault closure
+- Metadata with vault details
+- Tests for NFT functionality
+
+---
+
+### Performance & Security
+
+#### Issue #17: Security Audit Preparation
+**Branch**: `security/audit-prep`
+**Tasks**:
+- Add comprehensive inline comments
+- Document all assumptions
+- Add security considerations to README
+- Create SECURITY.md
+- List known limitations
+- Prepare audit checklist
+
+#### Issue #18: Formal Verification Setup
+**Branch**: `test/formal-verification`
+**Tasks**:
+- Add Certora specs (if applicable)
+- Property-based testing with Foundry
+- Invariant tests
+- Document verification results
+
+#### Issue #19: Gas Profiling & Benchmarking
+**Branch**: `optimization/gas-profiling`
+**Tasks**:
+- Profile all functions
+- Create gas benchmarks
+- Compare with similar protocols
+- Document optimization opportunities
+- Add gas usage to documentation
+
+---
+
+## 🧪 Testing Enhancements
+
+### Issue #20: Fuzz Testing Expansion
+**Branch**: `test/fuzz-testing`
+**Changes**:
+- Add more fuzz test scenarios
+- Test edge cases with fuzzing
+- Increase fuzz runs
+- Document findings
+
+### Issue #21: Integration Tests
+**Branch**: `test/integration-tests`
+**Changes**:
+- Fork Base mainnet for tests
+- Test with real protocols (Aave, etc.)
+- Test with actual Base tokens
+- End-to-end scenarios
+
+### Issue #22: Test Coverage to 100%
+**Branch**: `test/full-coverage`
+**Tasks**:
+- Identify uncovered lines
+- Add tests for edge cases
+- Test all revert scenarios
+- Test all events
+- Achieve 100% line coverage
+
+---
+
+## 📚 Documentation Tasks
+
+### Issue #23: API Reference Documentation
+**Branch**: `docs/api-reference`
+**Content**:
+- Complete function reference
+- Parameter descriptions
+- Return value documentation
+- Usage examples for each function
+- Error handling guide
+
+### Issue #24: Architecture Documentation
+**Branch**: `docs/architecture`
+**Content**:
+- System architecture diagrams
+- Contract interaction flows
+- State machine diagrams
+- Security model documentation
+- Upgrade patterns (if applicable)
+
+### Issue #25: Developer Guides
+**Branch**: `docs/developer-guides`
+**Content**:
+- Getting started guide
+- Testing guide
+- Deployment guide
+- Integration guide
+- Troubleshooting guide
+
+---
+
+## 🛠️ Tooling & Scripts
+
+### Issue #26: Deployment Verification Script
+**Branch**: `scripts/deployment-verification`
+**Content**:
+- Script to verify deployment
+- Check contract state post-deployment
+- Validate configuration
+- Test basic interactions
+
+### Issue #27: Contract Interaction CLI
+**Branch**: `scripts/cli-tool`
+**Content**:
+- Interactive CLI for contract operations
+- User-friendly commands
+- Help documentation
+- Error handling
+
+### Issue #28: Analytics Dashboard Script
+**Branch**: `scripts/analytics`
+**Content**:
+- Script to query contract stats
+- Vault analytics
+- Fee analytics
+- User statistics
+- Export to CSV/JSON
+
+---
+
+## 🔄 Workflow Guidelines
+
+### Creating an Issue
+1. Go to GitHub Issues
+2. Use template if applicable
+3. Clear title and description
+4. Add labels (bug, enhancement, documentation, etc.)
+5. Assign to yourself
+
+### Working on a Task
+```bash
+# 1. Create branch from master
+git checkout master
+git pull origin master
+git checkout -b feature/your-feature-name
+
+# 2. Make changes and commit
+git add .
+git commit -m "feat: add feature description"
+
+# 3. Run tests
+forge test -vv
+
+# 4. Push branch
+git push -u origin feature/your-feature-name
+
+# 5. Create PR on GitHub
+# - Reference issue in description (e.g., "Closes #1")
+# - Request review if needed
+# - Merge when approved
+```
+
+### PR Guidelines
+- Clear title describing changes
+- Description with context
+- Include "Closes #X" to auto-close issue
+- All tests must pass
+- Code should be documented
+- Gas impact noted if applicable
+
+---
+
+## 📊 Progress Tracking
+
+### Week 1 Focus
+- [ ] GitHub templates (#1)
+- [ ] Vault metadata (#2)
+- [ ] Gas optimization (#3)
+- [ ] Contributing guide (#4)
+- [ ] Enhanced events (#5)
+
+### Week 2 Focus
+- [ ] ERC-20 support (#6)
+- [ ] Vault templates (#7)
+- [ ] CI/CD setup (#10)
+- [ ] Coverage (#11)
+
+### Week 3 Focus
+- [ ] Advanced feature (pick 1: #13, #14, #15, or #16)
+- [ ] Security prep (#17)
+- [ ] Integration tests (#21)
+
+### Week 4 Focus
+- [ ] Documentation polish (#23, #24, #25)
+- [ ] Final optimizations
+- [ ] Audit preparation
 
 ---
 
 ## 📝 Notes
 
 ### Deployment Info
-- **Contract Address (Sepolia)**: _TBD_
-- **Contract Address (Mainnet)**: _TBD_
+- **Contract Address (Sepolia)**: _TBD (user will deploy)_
+- **Contract Address (Mainnet)**: _TBD (user will deploy)_
 - **Deployment Date**: _TBD_
-- **Initial Fee**: 0.5% (50 BPS)
 
-### Important Links
-- GitHub: https://github.com/MarcusDavidG/blue-savings
-- Talent Leaderboard: https://talent.app/~/earn/base-january
-- Base Discord: https://discord.gg/buildonbase
-- BaseScan: https://basescan.org
-
-### API Keys Needed
-- [x] GitHub account (connected to talent.app)
-- [ ] BaseScan API key
-- [ ] Deployment wallet with Base ETH
-
----
-
-## ✅ Daily Checklist Template
-
-Copy this for daily tracking:
-
-```
-## Day X - [Date]
-
-### Completed
-- [ ] Made code commit
-- [ ] Checked leaderboard position
-- [ ] Engaged in Base community
-- [ ] Monitored contract activity
-
-### Metrics
-- Rank: 
-- Vaults Created: 
-- Total Transactions: 
-- Fees Generated: 
-- GitHub Stars: 
-
-### Notes
-- 
-
-### Tomorrow's Focus
-- 
-```
+### Development Environment
+- Solidity: 0.8.24
+- Framework: Foundry
+- Network: Base (Chain ID: 8453)
+- Testnet: Base Sepolia (Chain ID: 84532)
 
 ---
 
 **Last Updated**: 2026-01-07  
-**Next Review**: Deploy to mainnet and begin promotion
+**Next Review**: After first deployment
