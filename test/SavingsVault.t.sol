@@ -629,4 +629,15 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testVaultCreatedAtTimestampIsAccurate() public {
+        uint256 beforeCreate = block.timestamp;
+
+        vm.prank(user1);
+        uint256 vaultId = vault.createVault(0, 0, "Time Test");
+
+        (, , , , , uint256 createdAt,,) = vault.getVaultDetails(vaultId);
+
+        assertEq(createdAt, beforeCreate, "Created timestamp should match block timestamp");
+    }
 }
