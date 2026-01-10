@@ -415,10 +415,12 @@ contract SavingsVaultTest is Test {
     }
 
     function testCannotSetFeeAboveMaximum() public {
-        vm.prank(owner);
+        vm.startPrank(owner);
 
         vm.expectRevert(SavingsVault.InvalidFee.selector);
-        vault.setFeeBps(201); // One above MAX_FEE_BPS
+        vault.setFeeBps(300); // 3% > MAX_FEE_BPS
+        
+        vm.stopPrank();
     }
 
     function testDepositLargeAmount() public {
@@ -653,5 +655,17 @@ contract SavingsVaultTest is Test {
         assertFalse(canWithdraw, "Should not be able to withdraw while locked");
 
         vm.stopPrank();
+    }
+
+    function testGetTotalVaults() public {
+        assertEq(vault.getTotalVaults(), 0, "Should start at 0");
+
+        vm.prank(user1);
+        vault.createVault(0, 0, "Vault 1");
+        assertEq(vault.getTotalVaults(), 1);
+
+        vm.prank(user2);
+        vault.createVault(0, 0, "Vault 2");
+        assertEq(vault.getTotalVaults(), 2);
     }
 }
