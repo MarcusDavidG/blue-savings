@@ -815,4 +815,14 @@ contract SavingsVaultTest is Test {
         
         vm.stopPrank();
     }
+
+    function testFeeGetters() public {
+        assertEq(vault.getCurrentFeeAmount(), 50, "Default fee should be 50 bps");
+        assertEq(vault.getMaximumFee(), 200, "Max fee should be 200 bps");
+        
+        vm.prank(owner);
+        vault.setFeeBps(100);
+        
+        assertEq(vault.getCurrentFeeAmount(), 100, "Fee should be updated to 100 bps");
+    }
 }
