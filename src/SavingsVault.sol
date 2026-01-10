@@ -227,7 +227,8 @@ contract SavingsVault {
 
     function emergencyWithdraw(uint256 vaultId) external onlyVaultOwner(vaultId) {
         Vault storage vault = vaults[vaultId];
-        if (!vault.isActive) revert VaultNotActive();
+        bool _isActive = vault.isActive; // Cache
+        if (!_isActive) revert VaultNotActive();
 
         uint256 amount = vault.balance;
         vault.balance = 0;
