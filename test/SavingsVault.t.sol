@@ -550,4 +550,23 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testWithdrawWithExactGoalAmount() public {
+        vm.startPrank(user1);
+
+        uint256 goalAmount = 1 ether;
+        uint256 vaultId = vault.createVault(goalAmount, 0, "Goal Test");
+
+        // Deposit slightly more due to fees
+        vault.deposit{value: 1.01 ether}(vaultId);
+
+        (, uint256 balance, , , , ,,) = vault.getVaultDetails(vaultId);
+
+        // Verify we can withdraw when goal is met
+        if (balance >= goalAmount) {
+            vault.withdraw(vaultId);
+        }
+
+        vm.stopPrank();
+    }
 }
