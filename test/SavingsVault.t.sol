@@ -684,4 +684,36 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testGetTotalDepositsForUser() public {
+        vm.startPrank(user1);
+
+        uint256 vault1 = vault.createVault(0, 0, "Vault 1");
+        uint256 vault2 = vault.createVault(0, 0, "Vault 2");
+
+        vault.deposit{value: 1 ether}(vault1);
+        vault.deposit{value: 2 ether}(vault2);
+
+        uint256 total = vault.getTotalDepositsForUser(user1);
+
+        // Account for fees
+        assertTrue(total > 2.9 ether && total < 3 ether, "Should be ~2.985 ETH after fees");
+
+        vm.stopPrank();
+    }
+
+    function testIsVaultUnlocked() public {
+        vm.startPrank(user1);
+
+        uint256 unlockTime = block.timestamp + 1 days;
+        uint256 vaultId = vault.createVault(0, unlockTime, "Locked");
+
+        assertFalse(vault.isVaultUnlocked(vaultId), "Should be locked");
+
+        vm.warp(unlockTime);
+
+        assertTrue(vault.isVaultUnlocked(vaultId), "Should be unlocked");
+
+        vm.stopPrank();
+    }
 }
