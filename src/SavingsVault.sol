@@ -422,6 +422,13 @@ contract SavingsVault {
     function getVaultOwner(uint256 vaultId) external view returns (address owner) {
         return vaults[vaultId].owner;
     }
+
+    /// @notice Get vault balance
+    /// @param vaultId Vault to query
+    /// @return balance Vault balance in wei
+    function getVaultBalance(uint256 vaultId) external view returns (uint256 balance) {
+        return vaults[vaultId].balance;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
