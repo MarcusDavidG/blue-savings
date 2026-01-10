@@ -294,6 +294,25 @@ contract SavingsVault {
     function getTotalVaults() external view returns (uint256) {
         return vaultCounter;
     }
+
+    /// @notice Get count of active vaults for a user
+    /// @param user Address to query
+    /// @return count Number of active vaults
+    function getActiveVaultCount(address user) external view returns (uint256 count) {
+        uint256[] memory userVaultIds = userVaults[user];
+        uint256 length = userVaultIds.length;
+
+        for (uint256 i = 0; i < length;) {
+            if (vaults[userVaultIds[i]].isActive) {
+                unchecked {
+                    ++count;
+                }
+            }
+            unchecked {
+                ++i;
+            }
+        }
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
