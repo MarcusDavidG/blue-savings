@@ -164,7 +164,8 @@ contract SavingsVault {
         if (_msgValue == 0) revert InvalidAmount();
 
         Vault storage vault = vaults[vaultId];
-        if (!vault.isActive) revert VaultNotActive();
+        bool _isActive = vault.isActive; // Cache
+        if (!_isActive) revert VaultNotActive();
 
         // Calculate protocol fee and net deposit amount
         uint256 _feeBps = feeBps; // Cache storage read
