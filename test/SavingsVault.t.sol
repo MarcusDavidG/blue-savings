@@ -525,4 +525,13 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testFeeCalculationPrecision() public {
+        uint256 amount = 1 ether;
+
+        (uint256 fee, uint256 netDeposit) = vault.calculateDepositFee(amount);
+
+        assertEq(fee, (amount * 50) / 10000, "Fee calculation should be precise");
+        assertEq(fee + netDeposit, amount, "Fee plus net should equal amount");
+    }
 }
