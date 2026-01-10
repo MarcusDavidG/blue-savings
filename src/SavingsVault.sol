@@ -338,7 +338,10 @@ contract SavingsVault {
     /// @return fee The protocol fee amount
     /// @return netDeposit Amount credited to vault after fee
     function calculateDepositFee(uint256 amount) external view returns (uint256 fee, uint256 netDeposit) {
-        fee = (amount * feeBps) / BPS_DENOMINATOR;
-        netDeposit = amount - fee;
+        uint256 _feeBps = feeBps; // Cache for consistency
+        fee = (amount * _feeBps) / BPS_DENOMINATOR;
+        unchecked {
+            netDeposit = amount - fee; // Safe subtraction
+        }
     }
 }
