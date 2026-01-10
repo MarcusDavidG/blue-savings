@@ -1,6 +1,10 @@
-# BlueSavings
+# BlueSavings 💙
 
 A decentralized savings vault protocol built natively on Base. Create time-locked or goal-based savings vaults with transparent on-chain guarantees. BlueSavings brings the reliability of traditional savings with the transparency of blockchain.
+
+**Version:** 1.1.0  
+**License:** MIT  
+**Network:** Base (Chain ID: 8453)
 
 ## Features
 
