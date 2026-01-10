@@ -392,6 +392,14 @@ contract SavingsVault {
             remaining = vault.goalAmount - vault.balance;
         }
     }
+
+    /// @notice Check if a vault exists
+    /// @param vaultId Vault to check
+    /// @return exists True if vault was created
+    function vaultExists(uint256 vaultId) external view returns (bool exists) {
+        // Vault exists if it has an owner (owner is never zero for created vaults)
+        return vaults[vaultId].owner != address(0);
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
