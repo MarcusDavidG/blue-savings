@@ -391,4 +391,16 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testCreateVaultWithZeroTimestamp() public {
+        vm.startPrank(user1);
+
+        uint256 vaultId = vault.createVault(0, 0, "Immediate Access");
+
+        (, , , uint256 unlockTime, , ,,) = vault.getVaultDetails(vaultId);
+
+        assertEq(unlockTime, 0, "Unlock time should be zero");
+
+        vm.stopPrank();
+    }
 }
