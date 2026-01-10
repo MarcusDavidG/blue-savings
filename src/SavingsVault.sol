@@ -247,10 +247,11 @@ contract SavingsVault {
         uint256 amount = totalFeesCollected;
         totalFeesCollected = 0;
 
-        (bool success,) = payable(owner).call{value: amount}("");
+        address _owner = owner; // Cache owner
+        (bool success,) = payable(_owner).call{value: amount}("");
         if (!success) revert TransferFailed();
 
-        emit FeeCollected(owner, amount);
+        emit FeeCollected(_owner, amount);
     }
 
     /// @notice Update protocol fee percentage
