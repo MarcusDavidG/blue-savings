@@ -777,4 +777,13 @@ contract SavingsVaultTest is Test {
         
         vm.stopPrank();
     }
+
+    function testVaultExists() public {
+        assertFalse(vault.vaultExists(999), "Non-existent vault should return false");
+        
+        vm.prank(user1);
+        uint256 vaultId = vault.createVault(0, 0, "Test");
+        
+        assertTrue(vault.vaultExists(vaultId), "Created vault should exist");
+    }
 }
