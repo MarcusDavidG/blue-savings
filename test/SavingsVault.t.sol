@@ -4,6 +4,9 @@ pragma solidity ^0.8.24;
 import {Test} from "forge-std/Test.sol";
 import {SavingsVault} from "../src/SavingsVault.sol";
 
+/// @title SavingsVault Test Suite
+/// @notice Comprehensive tests for SavingsVault contract
+
 contract SavingsVaultTest is Test {
     SavingsVault public vault;
     
