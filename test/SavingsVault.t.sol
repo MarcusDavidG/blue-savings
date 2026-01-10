@@ -668,4 +668,20 @@ contract SavingsVaultTest is Test {
         vault.createVault(0, 0, "Vault 2");
         assertEq(vault.getTotalVaults(), 2);
     }
+
+    function testGetActiveVaultCount() public {
+        vm.startPrank(user1);
+
+        uint256 vault1 = vault.createVault(0, 0, "Active 1");
+        uint256 vault2 = vault.createVault(0, 0, "Active 2");
+
+        assertEq(vault.getActiveVaultCount(user1), 2);
+
+        vault.deposit{value: 1 ether}(vault1);
+        vault.emergencyWithdraw(vault1);
+
+        assertEq(vault.getActiveVaultCount(user1), 1, "Should be 1 after withdrawal");
+
+        vm.stopPrank();
+    }
 }
