@@ -402,6 +402,13 @@ contract SavingsVault {
         // Vault exists if it has an owner (owner is never zero for created vaults)
         return vaults[vaultId].owner != address(0);
     }
+
+    /// @notice Get total value locked in all vaults
+    /// @return total Total ETH locked in protocol
+    function getTotalProtocolValue() external view returns (uint256 total) {
+        // Total = contract balance - uncollected fees
+        total = address(this).balance - totalFeesCollected;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
