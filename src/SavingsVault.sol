@@ -377,6 +377,21 @@ contract SavingsVault {
             return unlockTime - block.timestamp;
         }
     }
+
+    /// @notice Get amount remaining to reach goal
+    /// @param vaultId Vault to check
+    /// @return remaining Amount in wei (0 if goal reached or no goal)
+    function getRemainingToGoal(uint256 vaultId) external view returns (uint256 remaining) {
+        Vault memory vault = vaults[vaultId];
+
+        if (vault.goalAmount == 0 || vault.balance >= vault.goalAmount) {
+            return 0;
+        }
+
+        unchecked {
+            remaining = vault.goalAmount - vault.balance;
+        }
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
