@@ -730,4 +730,19 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testGetVaultProgress() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(1 ether, 0, "Progress Vault");
+        
+        assertEq(vault.getVaultProgress(vaultId), 0, "Should be 0% initially");
+        
+        vault.deposit{value: 0.5 ether}(vaultId);
+        
+        uint256 progress = vault.getVaultProgress(vaultId);
+        assertTrue(progress > 4900 && progress < 5000, "Should be ~49.75% (accounting for fees)");
+        
+        vm.stopPrank();
+    }
 }
