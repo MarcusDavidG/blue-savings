@@ -187,7 +187,8 @@ contract SavingsVault {
         if (!vault.isActive) revert VaultNotActive();
 
         // Verify unlock time has passed if set
-        if (vault.unlockTimestamp != 0 && block.timestamp < vault.unlockTimestamp) {
+        uint256 _unlockTime = vault.unlockTimestamp; // Cache
+        if (_unlockTime != 0 && block.timestamp < _unlockTime) {
             revert VaultLocked();
         }
 
