@@ -569,4 +569,11 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testCannotTransferOwnershipToZeroAddress() public {
+        vm.prank(owner);
+
+        vm.expectRevert(SavingsVault.InvalidParameters.selector);
+        vault.transferOwnership(address(0));
+    }
 }
