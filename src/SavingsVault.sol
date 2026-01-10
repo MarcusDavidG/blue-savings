@@ -21,13 +21,19 @@ contract SavingsVault {
     /// @notice Maximum protocol fee (2%)
     uint256 public constant MAX_FEE_BPS = 200;
     
-    /// @notice Basis points denominator (10000 = 100%)
-    uint256 public constant BPS_DENOMINATOR = 10000;
+        /// @notice Basis points denominator (10000 = 100%)
     
-    uint256 public vaultCounter;
-    uint256 public feeBps = 50; // 0.5% default
-    uint256 public totalFeesCollected;
-    address public owner;
+        uint256 public constant BPS_DENOMINATOR = 10000;
+    
+        
+    
+        uint256 public vaultCounter;
+    
+        uint256 public feeBps = 50; // 0.5% default
+    
+        uint256 public totalFeesCollected;
+    
+        address public owner;
     
     mapping(uint256 => Vault) public vaults;
     mapping(address => uint256[]) public userVaults;
