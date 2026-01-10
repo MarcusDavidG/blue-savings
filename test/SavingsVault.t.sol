@@ -511,4 +511,18 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testCannotWithdrawFromInactiveVault() public {
+        vm.startPrank(user1);
+
+        uint256 vaultId = vault.createVault(0, 0, "Test");
+        vault.deposit{value: 1 ether}(vaultId);
+        vault.emergencyWithdraw(vaultId);
+
+        // Try to withdraw again
+        vm.expectRevert(SavingsVault.VaultNotActive.selector);
+        vault.withdraw(vaultId);
+
+        vm.stopPrank();
+    }
 }
