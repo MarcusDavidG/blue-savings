@@ -13,6 +13,7 @@ artifacts/
 
 # Broadcast logs
 broadcast/
+broadcast/**/dry-run/
 
 # IDE
 .vscode/
