@@ -716,4 +716,18 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+    
+    function testIsGoalReached() public {
+        vm.startPrank(user1);
+
+        uint256 vaultId = vault.createVault(1 ether, 0, "Goal Vault");
+
+        assertFalse(vault.isGoalReached(vaultId), "Goal not reached yet");
+
+        vault.deposit{value: 1.1 ether}(vaultId);
+
+        assertTrue(vault.isGoalReached(vaultId), "Goal should be reached");
+
+        vm.stopPrank();
+    }
 }
