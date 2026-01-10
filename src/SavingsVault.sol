@@ -436,6 +436,14 @@ contract SavingsVault {
     function getVaultMetadata(uint256 vaultId) external view returns (string memory metadata) {
         return vaults[vaultId].metadata;
     }
+
+    /// @notice Check if address is vault owner
+    /// @param vaultId Vault to check
+    /// @param user Address to verify
+    /// @return True if user is vault owner
+    function isVaultOwner(uint256 vaultId, address user) external view returns (bool) {
+        return vaults[vaultId].owner == user;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
