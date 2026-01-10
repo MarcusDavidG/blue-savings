@@ -186,13 +186,19 @@ contract SavingsVault {
         vault.balance += depositAmount;
         totalFeesCollected += feeAmount;
         
-        emit Deposited(vaultId, msg.sender, depositAmount, feeAmount);
-    }
-    
-    /// @notice Withdraw funds from vault when unlock conditions are met
-    /// @dev Requires unlock time passed and goal amount reached
-    /// @param vaultId The ID of the vault to withdraw from
-    function withdraw(uint256 vaultId) external onlyVaultOwner(vaultId) {
+                emit Deposited(vaultId, msg.sender, depositAmount, feeAmount);
+        
+            }
+        
+        
+        
+            /// @notice Withdraw funds from vault when unlock conditions are met
+        
+            /// @dev Requires unlock time passed and goal amount reached
+        
+            /// @param vaultId The ID of the vault to withdraw from
+        
+            function withdraw(uint256 vaultId) external onlyVaultOwner(vaultId) {
         Vault storage vault = vaults[vaultId];
         if (!vault.isActive) revert VaultNotActive();
         
