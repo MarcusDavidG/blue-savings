@@ -28,7 +28,8 @@ contract SavingsVault {
     
         
     
-        uint256 public vaultCounter;
+        // State variables
+    uint256 public vaultCounter;
     
         uint256 public feeBps = 50; // 0.5% default
     
