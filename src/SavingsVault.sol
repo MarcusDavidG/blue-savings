@@ -344,6 +344,24 @@ contract SavingsVault {
         Vault memory vault = vaults[vaultId];
         return vault.goalAmount == 0 || vault.balance >= vault.goalAmount;
     }
+
+    /// @notice Get vault goal progress percentage (in basis points)
+    /// @param vaultId Vault to check
+    /// @return progress Progress in bps (10000 = 100%)
+    function getVaultProgress(uint256 vaultId) external view returns (uint256 progress) {
+        Vault memory vault = vaults[vaultId];
+
+        if (vault.goalAmount == 0) {
+            return 10000; // No goal = 100% complete
+        }
+
+        if (vault.balance >= vault.goalAmount) {
+            return 10000; // Goal reached = 100%
+        }
+
+        // Calculate percentage in basis points
+        progress = (vault.balance * 10000) / vault.goalAmount;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
