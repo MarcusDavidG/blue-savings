@@ -464,4 +464,21 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testUserCanCreateMultipleVaults() public {
+        vm.startPrank(user1);
+
+        uint256 vault1 = vault.createVault(1 ether, 0, "Vault 1");
+        uint256 vault2 = vault.createVault(2 ether, 0, "Vault 2");
+        uint256 vault3 = vault.createVault(3 ether, 0, "Vault 3");
+
+        uint256[] memory userVaults = vault.getUserVaults(user1);
+
+        assertEq(userVaults.length, 3, "User should have 3 vaults");
+        assertEq(userVaults[0], vault1);
+        assertEq(userVaults[1], vault2);
+        assertEq(userVaults[2], vault3);
+
+        vm.stopPrank();
+    }
 }
