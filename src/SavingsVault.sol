@@ -164,11 +164,14 @@ contract SavingsVault {
         if (!vault.isActive) revert VaultNotActive();
 
         // Calculate protocol fee and net deposit amount
-        uint256 feeAmount = (msg.value * feeBps) / BPS_DENOMINATOR;
+        uint256 _feeBps = feeBps; // Cache storage read
+        uint256 feeAmount = (msg.value * _feeBps) / BPS_DENOMINATOR;
         uint256 depositAmount = msg.value - feeAmount;
 
-        vault.balance += depositAmount;
-        totalFeesCollected += feeAmount;
+        unchecked {
+            vault.balance += depositAmount;
+            totalFeesCollected += feeAmount;
+        }
 
         emit Deposited(vaultId, msg.sender, depositAmount, feeAmount);
     }
