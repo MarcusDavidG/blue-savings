@@ -96,6 +96,7 @@ contract SavingsVault {
     event FeeUpdated(uint256 oldFee, uint256 newFee);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     
+    // Custom errors
     /// @notice Thrown when caller is not authorized for action
     error Unauthorized();
     /// @notice Thrown when vault is not active
