@@ -45,7 +45,6 @@ contract SavingsVaultTest is Test {
         
         vm.deal(user1, 100 ether);
         vm.deal(user2, 100 ether);
-        vm.deal(address(10), 1 ether); // Add this line to deal 1 ether to address(10)
     }
     
     function testCreateVaultWithTimeLock() public {
@@ -281,7 +280,7 @@ contract SavingsVaultTest is Test {
     function testTransferOwnership() public {
         vm.startPrank(owner);
         
-        address newOwner = address(10);
+        address newOwner = address(100);
         vault.transferOwnership(newOwner);
         
         assertEq(vault.owner(), newOwner);
@@ -583,7 +582,7 @@ contract SavingsVaultTest is Test {
     function testOwnershipTransferEmitsEvent() public {
         vm.prank(owner);
 
-        address newOwner = address(10);
+        address newOwner = address(100);
 
         vm.expectEmit(true, true, false, false);
         emit OwnershipTransferred(owner, newOwner);
@@ -593,25 +592,26 @@ contract SavingsVaultTest is Test {
 
     function testNewOwnerCanCollectFees() public {
         // Generate some fees
-        vm.prank(user1);
+        vm.startPrank(user1);
         uint256 vaultId = vault.createVault(0, 0, "Test");
-
-        vm.prank(user1);
         vault.deposit{value: 1 ether}(vaultId);
+        vm.stopPrank();
 
         // Transfer ownership
-        address newOwner = address(10);
+        address newOwner = address(100);
         vm.prank(owner);
         vault.transferOwnership(newOwner);
 
         // New owner collects fees
         uint256 feesCollected = vault.totalFeesCollected();
+        vm.deal(newOwner, feesCollected + 1 ether); // Ensure newOwner has enough Ether for the transaction and to collect fees
+        uint256 initialNewOwnerBalance = newOwner.balance; // Capture balance before collection
 
         vm.prank(newOwner);
         vault.collectFees();
 
         assertEq(vault.totalFeesCollected(), 0, "Fees should be collected");
-        assertEq(newOwner.balance, feesCollected, "New owner should receive fees");
+        assertEq(newOwner.balance, initialNewOwnerBalance + feesCollected, "New owner should receive fees");
     }
 
     function testMetadataCanBeUpdatedMultipleTimes() public {
