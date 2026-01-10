@@ -336,6 +336,14 @@ contract SavingsVault {
         uint256 unlockTime = vaults[vaultId].unlockTimestamp;
         return unlockTime == 0 || block.timestamp >= unlockTime;
     }
+
+    /// @notice Check if vault goal is reached
+    /// @param vaultId Vault to check
+    /// @return True if no goal set or goal is reached
+    function isGoalReached(uint256 vaultId) external view returns (bool) {
+        Vault memory vault = vaults[vaultId];
+        return vault.goalAmount == 0 || vault.balance >= vault.goalAmount;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
