@@ -786,4 +786,18 @@ contract SavingsVaultTest is Test {
         
         assertTrue(vault.vaultExists(vaultId), "Created vault should exist");
     }
+
+    function testGetTotalProtocolValue() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(0, 0, "Test");
+        vault.deposit{value: 1 ether}(vaultId);
+        
+        uint256 tvl = vault.getTotalProtocolValue();
+        
+        // TVL = total balance - fees
+        assertTrue(tvl > 0.99 ether && tvl < 1 ether, "TVL should be ~0.995 ETH");
+        
+        vm.stopPrank();
+    }
 }
