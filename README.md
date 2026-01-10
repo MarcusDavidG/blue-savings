@@ -10,10 +10,12 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 
 - **Time-Locked Vaults**: Set unlock timestamps to enforce savings discipline
 - **Goal-Based Vaults**: Define savings goals that must be reached before withdrawal
+- **Vault Metadata**: Name and describe your vaults for easy identification
 - **Multiple Vaults**: Create unlimited vaults with different parameters
 - **Emergency Withdrawals**: Access funds early if absolutely needed
 - **Transparent Fees**: Clear 0.5% protocol fee on deposits (adjustable by owner)
 - **Gas Optimized**: Built with modern Solidity patterns for Base's low-fee environment
+- **19 Helper Functions**: Comprehensive view functions for progress tracking and statistics
 
 ## Deployed Contracts
 
