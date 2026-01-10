@@ -379,4 +379,16 @@ contract SavingsVaultTest is Test {
         (,,,,,, string memory metadata,) = vault.getVaultDetails(vaultId);
         assertEq(metadata, "");
     }
+
+    function testCreateVaultWithZeroGoal() public {
+        vm.startPrank(user1);
+
+        uint256 vaultId = vault.createVault(0, 0, "No Goal Vault");
+
+        (, , uint256 goal, , , ,,) = vault.getVaultDetails(vaultId);
+
+        assertEq(goal, 0, "Goal should be zero");
+
+        vm.stopPrank();
+    }
 }
