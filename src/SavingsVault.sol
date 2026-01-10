@@ -129,7 +129,10 @@ contract SavingsVault {
             revert InvalidParameters();
         }
 
-        uint256 vaultId = vaultCounter++;
+        uint256 vaultId;
+        unchecked {
+            vaultId = vaultCounter++;
+        }
 
         vaults[vaultId] = Vault({
             owner: msg.sender,
