@@ -328,6 +328,14 @@ contract SavingsVault {
             }
         }
     }
+
+    /// @notice Check if vault is unlocked (time-wise)
+    /// @param vaultId Vault to check
+    /// @return True if vault has no time lock or time has passed
+    function isVaultUnlocked(uint256 vaultId) external view returns (bool) {
+        uint256 unlockTime = vaults[vaultId].unlockTimestamp;
+        return unlockTime == 0 || block.timestamp >= unlockTime;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
