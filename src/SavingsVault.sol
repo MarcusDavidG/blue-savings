@@ -134,8 +134,10 @@ contract SavingsVault {
             vaultId = vaultCounter++;
         }
 
+        address _sender = msg.sender; // Cache msg.sender
+
         vaults[vaultId] = Vault({
-            owner: msg.sender,
+            owner: _sender,
             balance: 0,
             goalAmount: goalAmount,
             unlockTimestamp: unlockTimestamp,
@@ -144,9 +146,9 @@ contract SavingsVault {
             metadata: metadata
         });
 
-        userVaults[msg.sender].push(vaultId);
+        userVaults[_sender].push(vaultId);
 
-        emit VaultCreated(vaultId, msg.sender, goalAmount, unlockTimestamp, metadata);
+        emit VaultCreated(vaultId, _sender, goalAmount, unlockTimestamp, metadata);
 
         return vaultId;
     }
