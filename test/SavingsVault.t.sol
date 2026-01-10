@@ -640,4 +640,18 @@ contract SavingsVaultTest is Test {
 
         assertEq(createdAt, beforeCreate, "Created timestamp should match block timestamp");
     }
+
+    function testCanWithdrawReturnsFalseWhenLocked() public {
+        vm.startPrank(user1);
+
+        uint256 unlockTime = block.timestamp + 30 days;
+        uint256 vaultId = vault.createVault(0, unlockTime, "Locked");
+        vault.deposit{value: 1 ether}(vaultId);
+
+        (, , , , , , , bool canWithdraw) = vault.getVaultDetails(vaultId);
+
+        assertFalse(canWithdraw, "Should not be able to withdraw while locked");
+
+        vm.stopPrank();
+    }
 }
