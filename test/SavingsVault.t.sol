@@ -495,4 +495,20 @@ contract SavingsVaultTest is Test {
 
         assertEq(vault.vaultCounter(), initialCounter + 2, "Counter should increment by 2");
     }
+
+    function testCannotDepositToInactiveVault() public {
+        vm.startPrank(user1);
+
+        uint256 vaultId = vault.createVault(0, 0, "Test");
+        vault.deposit{value: 1 ether}(vaultId);
+
+        // Withdraw to deactivate
+        vault.emergencyWithdraw(vaultId);
+
+        // Try to deposit again
+        vm.expectRevert(SavingsVault.VaultNotActive.selector);
+        vault.deposit{value: 1 ether}(vaultId);
+
+        vm.stopPrank();
+    }
 }
