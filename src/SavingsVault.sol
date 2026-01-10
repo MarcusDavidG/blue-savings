@@ -273,6 +273,7 @@ contract SavingsVault {
         emit OwnershipTransferred(oldOwner, newOwner);
     }
     
+    // View functions
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
