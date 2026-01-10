@@ -313,6 +313,21 @@ contract SavingsVault {
             }
         }
     }
+
+    /// @notice Get total deposited amount across all user vaults
+    /// @param user Address to query
+    /// @return total Total deposited amount in wei
+    function getTotalDepositsForUser(address user) external view returns (uint256 total) {
+        uint256[] memory userVaultIds = userVaults[user];
+        uint256 length = userVaultIds.length;
+
+        for (uint256 i = 0; i < length;) {
+            total += vaults[userVaultIds[i]].balance;
+            unchecked {
+                ++i;
+            }
+        }
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
