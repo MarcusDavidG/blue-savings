@@ -418,4 +418,22 @@ contract SavingsVaultTest is Test {
         vm.expectRevert(SavingsVault.InvalidFee.selector);
         vault.setFeeBps(201); // One above MAX_FEE_BPS
     }
+
+    function testDepositLargeAmount() public {
+        vm.startPrank(user1);
+
+        uint256 vaultId = vault.createVault(0, 0, "Large Deposit Vault");
+
+        vm.deal(user1, 1000 ether);
+        uint256 depositAmount = 500 ether;
+
+        vault.deposit{value: depositAmount}(vaultId);
+
+        (, uint256 balance, , , , ,,) = vault.getVaultDetails(vaultId);
+
+        (uint256 expectedFee, uint256 expectedNet) = vault.calculateDepositFee(depositAmount);
+        assertEq(balance, expectedNet, "Balance should match net deposit");
+
+        vm.stopPrank();
+    }
 }
