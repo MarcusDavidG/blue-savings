@@ -46,7 +46,7 @@ Both contracts are verified on BaseScan. You can:
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/blue-savings.git
+git clone https://github.com/MarcusDavidG/blue-savings.git
 cd blue-savings
 forge install
 ```
