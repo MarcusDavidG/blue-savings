@@ -10,6 +10,7 @@ artifacts/
 # Environment
 .env
 .env.local
+.env.backup
 
 # Broadcast logs
 broadcast/
