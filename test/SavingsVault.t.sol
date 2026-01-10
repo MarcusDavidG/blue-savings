@@ -37,6 +37,8 @@ contract SavingsVaultTest is Test {
         uint256 amount
     );
     
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
     function setUp() public {
         vm.prank(owner);
         vault = new SavingsVault();
@@ -575,5 +577,16 @@ contract SavingsVaultTest is Test {
 
         vm.expectRevert(SavingsVault.InvalidParameters.selector);
         vault.transferOwnership(address(0));
+    }
+
+    function testOwnershipTransferEmitsEvent() public {
+        vm.prank(owner);
+
+        address newOwner = address(10);
+
+        vm.expectEmit(true, true, false, false);
+        emit OwnershipTransferred(owner, newOwner);
+
+        vault.transferOwnership(newOwner);
     }
 }
