@@ -196,7 +196,8 @@ contract SavingsVault {
         uint256 _balance = vault.balance; // Cache balance
 
         // Verify goal amount reached if set
-        if (vault.goalAmount != 0 && _balance < vault.goalAmount) {
+        uint256 _goalAmount = vault.goalAmount; // Cache
+        if (_goalAmount != 0 && _balance < _goalAmount) {
             revert GoalNotReached();
         }
 
