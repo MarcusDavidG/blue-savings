@@ -481,4 +481,18 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testVaultCounterIncrementsCorrectly() public {
+        uint256 initialCounter = vault.vaultCounter();
+
+        vm.prank(user1);
+        vault.createVault(0, 0, "First");
+
+        assertEq(vault.vaultCounter(), initialCounter + 1, "Counter should increment by 1");
+
+        vm.prank(user2);
+        vault.createVault(0, 0, "Second");
+
+        assertEq(vault.vaultCounter(), initialCounter + 2, "Counter should increment by 2");
+    }
 }
