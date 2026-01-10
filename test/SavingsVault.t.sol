@@ -411,4 +411,11 @@ contract SavingsVaultTest is Test {
 
         assertEq(vault.feeBps(), 200, "Fee should be set to max");
     }
+
+    function testCannotSetFeeAboveMaximum() public {
+        vm.prank(owner);
+
+        vm.expectRevert(SavingsVault.InvalidFee.selector);
+        vault.setFeeBps(201); // One above MAX_FEE_BPS
+    }
 }
