@@ -45,6 +45,7 @@ contract SavingsVaultTest is Test {
         
         vm.deal(user1, 100 ether);
         vm.deal(user2, 100 ether);
+        vm.deal(address(10), 1 ether); // Add this line to deal 1 ether to address(10)
     }
     
     function testCreateVaultWithTimeLock() public {
@@ -476,7 +477,7 @@ contract SavingsVaultTest is Test {
 
         uint256[] memory userVaults = vault.getUserVaults(user1);
 
-        assertEq(userVaults.length, 3, "User should have 3 vaults");
+        assertEq(userVaults.length, 3);
         assertEq(userVaults[0], vault1);
         assertEq(userVaults[1], vault2);
         assertEq(userVaults[2], vault3);
@@ -588,5 +589,44 @@ contract SavingsVaultTest is Test {
         emit OwnershipTransferred(owner, newOwner);
 
         vault.transferOwnership(newOwner);
+    }
+
+    function testNewOwnerCanCollectFees() public {
+        // Generate some fees
+        vm.prank(user1);
+        uint256 vaultId = vault.createVault(0, 0, "Test");
+
+        vm.prank(user1);
+        vault.deposit{value: 1 ether}(vaultId);
+
+        // Transfer ownership
+        address newOwner = address(10);
+        vm.prank(owner);
+        vault.transferOwnership(newOwner);
+
+        // New owner collects fees
+        uint256 feesCollected = vault.totalFeesCollected();
+
+        vm.prank(newOwner);
+        vault.collectFees();
+
+        assertEq(vault.totalFeesCollected(), 0, "Fees should be collected");
+        assertEq(newOwner.balance, feesCollected, "New owner should receive fees");
+    }
+
+    function testMetadataCanBeUpdatedMultipleTimes() public {
+        vm.startPrank(user1);
+
+        uint256 vaultId = vault.createVault(0, 0, "Original");
+
+        vault.setVaultMetadata(vaultId, "Updated 1");
+        (, , , , , , string memory meta1,) = vault.getVaultDetails(vaultId);
+        assertEq(meta1, "Updated 1");
+
+        vault.setVaultMetadata(vaultId, "Updated 2");
+        (, , , , , , string memory meta2,) = vault.getVaultDetails(vaultId);
+        assertEq(meta2, "Updated 2");
+
+        vm.stopPrank();
     }
 }
