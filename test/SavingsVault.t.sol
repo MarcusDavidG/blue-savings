@@ -762,4 +762,19 @@ contract SavingsVaultTest is Test {
         
         vm.stopPrank();
     }
+
+    function testGetRemainingToGoal() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(2 ether, 0, "Goal Vault");
+        
+        assertEq(vault.getRemainingToGoal(vaultId), 2 ether);
+        
+        vault.deposit{value: 1 ether}(vaultId);
+        
+        uint256 remaining = vault.getRemainingToGoal(vaultId);
+        assertTrue(remaining > 1 ether && remaining < 1.01 ether, "Should account for fees");
+        
+        vm.stopPrank();
+    }
 }
