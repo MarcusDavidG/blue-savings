@@ -534,4 +534,20 @@ contract SavingsVaultTest is Test {
         assertEq(fee, (amount * 50) / 10000, "Fee calculation should be precise");
         assertEq(fee + netDeposit, amount, "Fee plus net should equal amount");
     }
+
+    function testWithdrawExactlyAtUnlockTime() public {
+        vm.startPrank(user1);
+
+        uint256 unlockTime = block.timestamp + 1 days;
+        uint256 vaultId = vault.createVault(0, unlockTime, "Unlock Test");
+        vault.deposit{value: 1 ether}(vaultId);
+
+        // Move to exactly unlock time
+        vm.warp(unlockTime);
+
+        // Should be able to withdraw
+        vault.withdraw(vaultId);
+
+        vm.stopPrank();
+    }
 }
