@@ -450,6 +450,12 @@ contract SavingsVault {
     function getCurrentFeeAmount() external view returns (uint256) {
         return feeBps;
     }
+
+    /// @notice Get maximum allowed protocol fee
+    /// @return Maximum fee in basis points (constant)
+    function getMaximumFee() external pure returns (uint256) {
+        return MAX_FEE_BPS;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
