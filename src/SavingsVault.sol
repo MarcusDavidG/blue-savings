@@ -114,6 +114,7 @@ contract SavingsVault {
     /// @notice Thrown when ETH transfer fails
     error TransferFailed();
     
+        // Modifiers
     modifier onlyOwner() {
         if (msg.sender != owner) revert Unauthorized();
         _;
