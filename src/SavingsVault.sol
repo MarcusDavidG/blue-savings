@@ -289,6 +289,11 @@ contract SavingsVault {
     }
 
     // View functions
+    /// @notice Get the total number of vaults created
+    /// @return Total vault count
+    function getTotalVaults() external view returns (uint256) {
+        return vaultCounter;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
