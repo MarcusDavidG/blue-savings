@@ -158,15 +158,16 @@ contract SavingsVault {
     /// @param vaultId The ID of the vault to deposit into
 
     function deposit(uint256 vaultId) external payable {
-        if (msg.value == 0) revert InvalidAmount();
+        uint256 _msgValue = msg.value; // Cache msg.value
+        if (_msgValue == 0) revert InvalidAmount();
 
         Vault storage vault = vaults[vaultId];
         if (!vault.isActive) revert VaultNotActive();
 
         // Calculate protocol fee and net deposit amount
         uint256 _feeBps = feeBps; // Cache storage read
-        uint256 feeAmount = (msg.value * _feeBps) / BPS_DENOMINATOR;
-        uint256 depositAmount = msg.value - feeAmount;
+        uint256 feeAmount = (_msgValue * _feeBps) / BPS_DENOMINATOR;
+        uint256 depositAmount = _msgValue - feeAmount;
 
         unchecked {
             vault.balance += depositAmount;
