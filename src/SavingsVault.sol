@@ -362,6 +362,21 @@ contract SavingsVault {
         // Calculate percentage in basis points
         progress = (vault.balance * 10000) / vault.goalAmount;
     }
+
+    /// @notice Get seconds remaining until vault unlocks
+    /// @param vaultId Vault to check
+    /// @return seconds Seconds until unlock (0 if already unlocked)
+    function getTimeUntilUnlock(uint256 vaultId) external view returns (uint256) {
+        uint256 unlockTime = vaults[vaultId].unlockTimestamp;
+
+        if (unlockTime == 0 || block.timestamp >= unlockTime) {
+            return 0;
+        }
+
+        unchecked {
+            return unlockTime - block.timestamp;
+        }
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
