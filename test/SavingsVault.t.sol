@@ -403,4 +403,12 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testSetMaximumFee() public {
+        vm.prank(owner);
+
+        vault.setFeeBps(200); // MAX_FEE_BPS
+
+        assertEq(vault.feeBps(), 200, "Fee should be set to max");
+    }
 }
