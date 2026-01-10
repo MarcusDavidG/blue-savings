@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+/// @title BlueSavings Vault Contract
 contract SavingsVault {
     struct Vault {
         address owner;
