@@ -444,6 +444,12 @@ contract SavingsVault {
     function isVaultOwner(uint256 vaultId, address user) external view returns (bool) {
         return vaults[vaultId].owner == user;
     }
+
+    /// @notice Get current protocol fee in basis points
+    /// @return Current fee (already public via feeBps, but explicit getter)
+    function getCurrentFeeAmount() external view returns (uint256) {
+        return feeBps;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
