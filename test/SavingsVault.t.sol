@@ -800,4 +800,19 @@ contract SavingsVaultTest is Test {
         
         vm.stopPrank();
     }
+
+    function testVaultHelperGetters() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(0, 0, "Test Vault");
+        vault.deposit{value: 1 ether}(vaultId);
+        
+        assertEq(vault.getVaultOwner(vaultId), user1);
+        assertTrue(vault.getVaultBalance(vaultId) > 0);
+        assertEq(vault.getVaultMetadata(vaultId), "Test Vault");
+        assertTrue(vault.isVaultOwner(vaultId, user1));
+        assertFalse(vault.isVaultOwner(vaultId, user2));
+        
+        vm.stopPrank();
+    }
 }
