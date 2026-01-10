@@ -90,10 +90,12 @@ contract SavingsVault {
     /// @param collector Address that collected fees
     /// @param amount Fee amount collected in wei
     event FeeCollected(address indexed collector, uint256 amount);
+
     /// @notice Emitted when protocol fee is updated
     /// @param oldFee Previous fee in basis points
     /// @param newFee New fee in basis points
     event FeeUpdated(uint256 oldFee, uint256 newFee);
+    
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     
     // Custom errors
