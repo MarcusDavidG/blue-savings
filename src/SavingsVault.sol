@@ -167,7 +167,10 @@ contract SavingsVault {
         // Calculate protocol fee and net deposit amount
         uint256 _feeBps = feeBps; // Cache storage read
         uint256 feeAmount = (_msgValue * _feeBps) / BPS_DENOMINATOR;
-        uint256 depositAmount = _msgValue - feeAmount;
+        uint256 depositAmount;
+        unchecked {
+            depositAmount = _msgValue - feeAmount; // Safe: feeAmount < _msgValue
+        }
 
         unchecked {
             vault.balance += depositAmount;
