@@ -745,4 +745,21 @@ contract SavingsVaultTest is Test {
         
         vm.stopPrank();
     }
+
+    function testGetTimeUntilUnlock() public {
+        vm.startPrank(user1);
+        
+        uint256 unlockTime = block.timestamp + 7 days;
+        uint256 vaultId = vault.createVault(0, unlockTime, "Time Vault");
+        
+        assertEq(vault.getTimeUntilUnlock(vaultId), 7 days, "Should be 7 days");
+        
+        vm.warp(block.timestamp + 3 days);
+        assertEq(vault.getTimeUntilUnlock(vaultId), 4 days, "Should be 4 days");
+        
+        vm.warp(unlockTime);
+        assertEq(vault.getTimeUntilUnlock(vaultId), 0, "Should be 0 when unlocked");
+        
+        vm.stopPrank();
+    }
 }
