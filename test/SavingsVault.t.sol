@@ -450,4 +450,18 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testMetadataWithSpecialCharacters() public {
+        vm.startPrank(user1);
+
+        string memory specialMetadata = "Test!@#$%^&*()_+-=[]{}|;:',.<>?";
+
+        uint256 vaultId = vault.createVault(0, 0, specialMetadata);
+
+        (, , , , , , string memory storedMetadata,) = vault.getVaultDetails(vaultId);
+
+        assertEq(storedMetadata, specialMetadata, "Special characters should be preserved");
+
+        vm.stopPrank();
+    }
 }
