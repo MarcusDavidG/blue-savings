@@ -436,4 +436,18 @@ contract SavingsVaultTest is Test {
 
         vm.stopPrank();
     }
+
+    function testCreateVaultWithLongMetadata() public {
+        vm.startPrank(user1);
+
+        string memory longMetadata = "This is a very long metadata string that contains a lot of characters to test how the contract handles long strings in the metadata field for vault creation";
+
+        uint256 vaultId = vault.createVault(0, 0, longMetadata);
+
+        (, , , , , , string memory storedMetadata,) = vault.getVaultDetails(vaultId);
+
+        assertEq(storedMetadata, longMetadata, "Metadata should match");
+
+        vm.stopPrank();
+    }
 }
