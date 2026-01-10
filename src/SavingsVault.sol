@@ -409,6 +409,12 @@ contract SavingsVault {
         // Total = contract balance - uncollected fees
         total = address(this).balance - totalFeesCollected;
     }
+
+    /// @notice Get total contract balance including fees
+    /// @return balance Total ETH held by contract
+    function getContractBalance() external view returns (uint256 balance) {
+        return address(this).balance;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
