@@ -179,7 +179,8 @@ contract SavingsVault {
             totalFeesCollected += feeAmount;
         }
 
-        emit Deposited(vaultId, msg.sender, depositAmount, feeAmount);
+        address _depositor = msg.sender; // Cache msg.sender
+        emit Deposited(vaultId, _depositor, depositAmount, feeAmount);
     }
 
     /// @notice Withdraw funds from vault when unlock conditions are met
