@@ -5,6 +5,8 @@ import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
 import {SavingsVault} from "../src/SavingsVault.sol";
 
+/// @title Interact Script
+/// @notice Interactive scripts for deployed SavingsVault
 contract InteractScript is Script {
     function run() external view {
         address vaultAddress = vm.envAddress("VAULT_ADDRESS");
