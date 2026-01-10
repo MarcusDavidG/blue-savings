@@ -97,6 +97,8 @@ contract SavingsVault {
     error InvalidParameters();
     /// @notice Thrown when ETH transfer fails
     error TransferFailed();
+    /// @notice Thrown when vault does not exist
+    error NonexistentVault();
 
     // Modifiers
     modifier onlyOwner() {
