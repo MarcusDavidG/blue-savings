@@ -429,6 +429,13 @@ contract SavingsVault {
     function getVaultBalance(uint256 vaultId) external view returns (uint256 balance) {
         return vaults[vaultId].balance;
     }
+
+    /// @notice Get vault metadata
+    /// @param vaultId Vault to query
+    /// @return metadata Vault name or description
+    function getVaultMetadata(uint256 vaultId) external view returns (string memory metadata) {
+        return vaults[vaultId].metadata;
+    }
     /// @notice Get all vault IDs owned by a user
     /// @param user Address to query vaults for
     /// @return Array of vault IDs owned by the user
