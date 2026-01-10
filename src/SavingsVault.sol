@@ -161,13 +161,19 @@ contract SavingsVault {
         
         emit VaultCreated(vaultId, msg.sender, goalAmount, unlockTimestamp, metadata);
         
-        return vaultId;
-    }
-    
-    /// @notice Deposit ETH into a vault with protocol fee deduction
-    /// @dev Charges feeBps percentage as protocol fee
-    /// @param vaultId The ID of the vault to deposit into
-    function deposit(uint256 vaultId) external payable {
+                return vaultId;
+        
+            }
+        
+        
+        
+            /// @notice Deposit ETH into a vault with protocol fee deduction
+        
+            /// @dev Charges feeBps percentage as protocol fee
+        
+            /// @param vaultId The ID of the vault to deposit into
+        
+            function deposit(uint256 vaultId) external payable {
         if (msg.value == 0) revert InvalidAmount();
         
         Vault storage vault = vaults[vaultId];
