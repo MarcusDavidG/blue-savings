@@ -191,7 +191,8 @@ contract SavingsVault {
 
     function withdraw(uint256 vaultId) external onlyVaultOwner(vaultId) {
         Vault storage vault = vaults[vaultId];
-        if (!vault.isActive) revert VaultNotActive();
+        bool _isActive = vault.isActive; // Cache
+        if (!_isActive) revert VaultNotActive();
 
         // Verify unlock time has passed if set
         uint256 _unlockTime = vault.unlockTimestamp; // Cache
