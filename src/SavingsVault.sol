@@ -219,13 +219,19 @@ contract SavingsVault {
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         if (!success) revert TransferFailed();
         
-        emit Withdrawn(vaultId, msg.sender, amount);
-    }
-    
-    /// @notice Emergency withdrawal bypassing lock conditions
-    /// @dev Allows vault owner to withdraw anytime, use with caution
-    /// @param vaultId The ID of the vault to emergency withdraw from
-    function emergencyWithdraw(uint256 vaultId) external onlyVaultOwner(vaultId) {
+                emit Withdrawn(vaultId, msg.sender, amount);
+        
+            }
+        
+        
+        
+            /// @notice Emergency withdrawal bypassing lock conditions
+        
+            /// @dev Allows vault owner to withdraw anytime, use with caution
+        
+            /// @param vaultId The ID of the vault to emergency withdraw from
+        
+            function emergencyWithdraw(uint256 vaultId) external onlyVaultOwner(vaultId) {
         Vault storage vault = vaults[vaultId];
         if (!vault.isActive) revert VaultNotActive();
         
