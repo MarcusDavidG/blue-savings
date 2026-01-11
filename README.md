@@ -60,6 +60,12 @@ forge install
 forge build
 ```
 
+### Run Tests
+
+```bash
+forge test -vv
+```
+
 ### Test
 
 ```bash
