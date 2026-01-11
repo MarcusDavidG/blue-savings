@@ -125,6 +125,7 @@ contract SavingsVault {
     }
 
     // External functions
+    
     /// @notice Creates a new savings vault with optional time lock and goal
     /// @param goalAmount Target savings amount (0 for no goal requirement)
     /// @param unlockTimestamp Unix timestamp when vault unlocks (0 for immediate access)
