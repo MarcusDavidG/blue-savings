@@ -299,3 +299,10 @@ Built on Base
 - **Tests**: 58
 - **Gas Optimized**: Yes
 
+
+## 💬 Community
+
+- GitHub Discussions: Ask questions and share ideas
+- Twitter: [@BlueSavings](https://twitter.com/bluesavings)
+- Discord: [Join our community](https://discord.gg/bluesavings)
+
