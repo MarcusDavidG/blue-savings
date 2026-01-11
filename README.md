@@ -79,6 +79,12 @@ forge test --gas-report
 forge coverage
 ```
 
+### Format Code
+
+```bash
+forge fmt
+```
+
 ## Usage
 
 ### Deploy to Base
