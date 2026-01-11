@@ -37,3 +37,4 @@ forge-std/
 *.log
 *.tmp
 .vscode/
+.DS_Store
