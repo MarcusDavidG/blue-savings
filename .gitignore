@@ -33,3 +33,4 @@ lib/
 # Node (if adding frontend later)
 node_modules/
 package-lock.json
+forge-std/
