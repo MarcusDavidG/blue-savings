@@ -107,6 +107,7 @@ contract SavingsVault {
     error NonexistentVault();
 
     // Modifiers
+    
     modifier onlyOwner() {
         if (msg.sender != owner) revert Unauthorized();
         _;
