@@ -85,6 +85,13 @@ forge coverage
 forge fmt
 ```
 
+## 📖 Documentation
+
+- [Architecture](./ARCHITECTURE.md) - Contract structure and design
+- [Contributing](./CONTRIBUTING.md) - How to contribute
+- [Security](./SECURITY.md) - Security policy
+- [Changelog](./CHANGELOG.md) - Version history
+
 ## Usage
 
 ### Deploy to Base
