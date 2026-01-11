@@ -39,7 +39,7 @@ Both contracts are verified on BaseScan. You can:
 - Write to contract (connect wallet)
 - View all transactions
 
-## Quick Start
+## ⚡ Quick Start
 
 ### Prerequisites
 
