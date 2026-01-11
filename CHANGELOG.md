@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Planned
+- ERC-20 token support
+- Batch operations
+- Vault templates
+
 ## [1.1.0] - 2026-01-10
 
 ### Added
