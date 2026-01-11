@@ -847,4 +847,16 @@ contract SavingsVaultTest is Test {
         
         vm.stopPrank();
     }
+
+    function testMultipleUsersStatistics() public {
+        vm.prank(user1);
+        vault.createVault(0, 0, "User1 Vault");
+        
+        vm.prank(user2);
+        vault.createVault(0, 0, "User2 Vault");
+        
+        assertEq(vault.getTotalVaults(), 2);
+        assertEq(vault.getActiveVaultCount(user1), 1);
+        assertEq(vault.getActiveVaultCount(user2), 1);
+    }
 }
