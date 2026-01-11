@@ -1,0 +1,3 @@
+# ERRORS
+
+Detailed documentation for ERRORS...
