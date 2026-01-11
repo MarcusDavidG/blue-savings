@@ -18,7 +18,7 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 - **Gas Optimized**: Built with modern Solidity patterns for Base's low-fee environment
 - **19 Helper Functions**: Comprehensive view functions for progress tracking and statistics
 
-## Deployed Contracts
+## 🚀 Deployed Contracts
 
 ### Base Mainnet (Production)
 - **Contract Address**: [0xf185cec4B72385CeaDE58507896E81F05E8b6c6a](https://basescan.org/address/0xf185cec4B72385CeaDE58507896E81F05E8b6c6a)
