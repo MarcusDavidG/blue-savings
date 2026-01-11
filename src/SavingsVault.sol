@@ -25,7 +25,6 @@ contract SavingsVault {
     uint256 public constant MAX_FEE_BPS = 200;
 
     /// @notice Basis points denominator (10000 = 100%)
-
     uint256 public constant BPS_DENOMINATOR = 10000;
 
     // State variables
