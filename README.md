@@ -66,12 +66,6 @@ forge build
 forge test -vv
 ```
 
-### Test
-
-```bash
-forge test -vv
-```
-
 ## Usage
 
 ### Deploy to Base
