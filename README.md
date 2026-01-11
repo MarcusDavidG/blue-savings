@@ -7,7 +7,7 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 **Network:** Base (Chain ID: 8453)  
 **Solidity:** ^0.8.24
 
-## Features
+## ✨ Features
 
 - **Time-Locked Vaults**: Set unlock timestamps to enforce savings discipline
 - **Goal-Based Vaults**: Define savings goals that must be reached before withdrawal
