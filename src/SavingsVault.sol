@@ -44,6 +44,7 @@ contract SavingsVault {
     mapping(address => uint256[]) public userVaults;
 
     // Events
+    
     /// @notice Emitted when a new vault is created
     /// @param vaultId Unique identifier for the vault
     /// @param owner Address of vault owner
