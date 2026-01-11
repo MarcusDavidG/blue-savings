@@ -306,3 +306,10 @@ Built on Base
 - Twitter: [@BlueSavings](https://twitter.com/bluesavings)
 - Discord: [Join our community](https://discord.gg/bluesavings)
 
+
+## 🔗 Links
+
+- [Base Website](https://base.org)
+- [BaseScan Explorer](https://basescan.org)
+- [Foundry Book](https://book.getfoundry.sh/)
+
