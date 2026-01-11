@@ -39,6 +39,7 @@ contract SavingsVault {
     address public owner;
 
     // Mappings
+    
     mapping(uint256 => Vault) public vaults;
     mapping(address => uint256[]) public userVaults;
 
