@@ -73,6 +73,12 @@ forge test -vv
 forge test --gas-report
 ```
 
+### Coverage
+
+```bash
+forge coverage
+```
+
 ## Usage
 
 ### Deploy to Base
