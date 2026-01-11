@@ -828,4 +828,12 @@ contract SavingsVaultTest is Test {
         
         assertEq(vault.getCurrentFeeAmount(), 100, "Fee should be updated to 100 bps");
     }
+
+    function testProgressWithNoGoal() public {
+        vm.prank(user1);
+        uint256 vaultId = vault.createVault(0, 0, "No Goal");
+        
+        assertEq(vault.getVaultProgress(vaultId), 10000, "No goal = 100% complete");
+        assertEq(vault.getRemainingToGoal(vaultId), 0, "No goal = 0 remaining");
+    }
 }
