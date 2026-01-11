@@ -6,7 +6,7 @@ import {SavingsVault} from "../src/SavingsVault.sol";
 
 /// @title SavingsVault Test Suite
 /// @notice Comprehensive tests for SavingsVault contract
-
+/// @dev Uses Foundry test framework with fuzzing and property tests
 contract SavingsVaultTest is Test {
     SavingsVault public vault;
     
