@@ -30,11 +30,8 @@ contract SavingsVault {
     // State variables
     
     uint256 public vaultCounter;
-
     uint256 public feeBps = 50; // 0.5% default
-
     uint256 public totalFeesCollected;
-
     address public owner;
 
     // Mappings
