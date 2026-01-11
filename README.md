@@ -4,7 +4,8 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 
 **Version:** 1.1.0  
 **License:** MIT  
-**Network:** Base (Chain ID: 8453)
+**Network:** Base (Chain ID: 8453)  
+**Solidity:** ^0.8.24
 
 ## Features
 
