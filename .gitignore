@@ -38,3 +38,4 @@ forge-std/
 *.tmp
 .vscode/
 .DS_Store
+*.swp
