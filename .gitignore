@@ -29,3 +29,7 @@ Thumbs.db
 
 # Foundry
 lib/
+
+# Node (if adding frontend later)
+node_modules/
+package-lock.json
