@@ -34,3 +34,4 @@ lib/
 node_modules/
 package-lock.json
 forge-std/
+*.log
