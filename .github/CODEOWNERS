@@ -1,0 +1,9 @@
+# Code owners for BlueSavings
+
+* @MarcusDavidG
+
+# Smart contracts require extra review
+*.sol @MarcusDavidG
+
+# Tests require testing expertise
+*.t.sol @MarcusDavidG
