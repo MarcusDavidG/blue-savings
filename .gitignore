@@ -36,3 +36,4 @@ package-lock.json
 forge-std/
 *.log
 *.tmp
+.vscode/
