@@ -36,3 +36,19 @@ SavingsVault
 - Unchecked math for safe operations
 - Minimal SLOAD operations
 
+
+## Security Considerations
+
+1. **Reentrancy Protection**: Uses checks-effects-interactions pattern
+2. **Access Control**: onlyOwner and onlyVaultOwner modifiers
+3. **Input Validation**: All parameters validated
+4. **Safe Math**: Uses checked arithmetic where needed, unchecked for safe operations
+5. **Custom Errors**: Gas-efficient error handling
+
+## Future Enhancements
+
+- ERC-20 token support for deposits
+- Batch vault operations
+- Vault templates for common use cases
+- NFT receipts for vaults
+- Cross-chain vault management
