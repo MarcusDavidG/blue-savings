@@ -29,6 +29,7 @@ contract SavingsVault {
     uint256 public constant BPS_DENOMINATOR = 10000;
 
     // State variables
+    
     uint256 public vaultCounter;
 
     uint256 public feeBps = 50; // 0.5% default
