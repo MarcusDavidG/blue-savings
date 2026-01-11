@@ -39,3 +39,4 @@ forge-std/
 .vscode/
 .DS_Store
 *.swp
+*.bak
