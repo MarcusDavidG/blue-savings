@@ -43,8 +43,9 @@ Both contracts are verified on BaseScan. You can:
 
 ### Prerequisites
 
-- [Foundry](https://book.getfoundry.sh/getting-started/installation)
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) - Smart contract development toolkit
 - Base wallet with ETH for gas
+- Git for version control
 
 ### Installation
 
