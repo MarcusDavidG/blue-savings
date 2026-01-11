@@ -20,6 +20,7 @@ contract SavingsVault {
     }
 
     // Constants
+    
     /// @notice Maximum protocol fee (2%)
     uint256 public constant MAX_FEE_BPS = 200;
 
