@@ -66,6 +66,12 @@ forge build
 forge test -vv
 ```
 
+### Gas Report
+
+```bash
+forge test --gas-report
+```
+
 ## Usage
 
 ### Deploy to Base
