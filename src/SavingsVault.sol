@@ -4,9 +4,10 @@ pragma solidity ^0.8.24;
 
 /**
  * @title BlueSavings Vault Contract
-/// @author BlueSavings Team
-/// @notice A savings vault protocol for time-locked and goal-based savings on Base
-/// @dev Implements time-locked and goal-based savings vaults with protocol fees
+ * @author BlueSavings Team
+ * @notice A savings vault protocol for time-locked and goal-based savings on Base
+ * @dev Implements time-locked and goal-based savings vaults with protocol fees
+ */
 contract SavingsVault {
     /// @notice Represents a savings vault with lock conditions and metadata
     /// @dev Stores all vault state including balance, goals, and ownership
