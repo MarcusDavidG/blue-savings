@@ -836,4 +836,15 @@ contract SavingsVaultTest is Test {
         assertEq(vault.getVaultProgress(vaultId), 10000, "No goal = 100% complete");
         assertEq(vault.getRemainingToGoal(vaultId), 0, "No goal = 0 remaining");
     }
+
+    function testGetContractBalance() public {
+        vm.startPrank(user1);
+        
+        uint256 vaultId = vault.createVault(0, 0, "Test");
+        vault.deposit{value: 1 ether}(vaultId);
+        
+        assertEq(vault.getContractBalance(), 1 ether, "Contract should hold 1 ETH");
+        
+        vm.stopPrank();
+    }
 }
