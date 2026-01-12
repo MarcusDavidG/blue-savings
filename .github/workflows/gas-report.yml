@@ -1,0 +1,32 @@
+name: Gas Report
+
+on:
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  gas-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        
+      - name: Generate gas report
+        run: forge test --gas-report > gas-report.txt
+        
+      - name: Comment gas report
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('gas-report.txt', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Gas Report\n\`\`\`\n${report}\n\`\`\``
+            });
