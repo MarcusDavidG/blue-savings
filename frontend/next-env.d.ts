@@ -1,0 +1,3 @@
+{
+  "config": "next-env.d.ts"
+}
