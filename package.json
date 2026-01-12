@@ -1,0 +1,34 @@
+{
+  "name": "blue-savings",
+  "version": "1.1.0",
+  "description": "Decentralized savings vault protocol on Base",
+  "scripts": {
+    "test": "forge test -vv",
+    "test:gas": "forge test --gas-report",
+    "test:coverage": "forge coverage",
+    "build": "forge build",
+    "clean": "forge clean",
+    "deploy:testnet": "forge script script/Deploy.s.sol:DeployScript --rpc-url base_sepolia --broadcast --verify",
+    "deploy:mainnet": "forge script script/Deploy.s.sol:DeployScript --rpc-url base --broadcast --verify",
+    "format": "forge fmt",
+    "lint": "solhint 'src/**/*.sol' 'test/**/*.sol'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarcusDavidG/blue-savings"
+  },
+  "keywords": [
+    "defi",
+    "savings",
+    "vault",
+    "base",
+    "ethereum",
+    "foundry",
+    "solidity"
+  ],
+  "author": "MarcusDavidG",
+  "license": "MIT",
+  "devDependencies": {
+    "solhint": "^4.0.0"
+  }
+}
