@@ -29,6 +29,6 @@
   "author": "MarcusDavidG",
   "license": "MIT",
   "devDependencies": {
-    "solhint": "^4.0.0"
+    "solhint": "^6.0.2"
   }
 }
