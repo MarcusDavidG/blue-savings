@@ -1,4 +1,4 @@
-# BlueSavings 💙
+# BlueSavings
 
 A decentralized savings vault protocol built natively on Base. Create time-locked or goal-based savings vaults with transparent on-chain guarantees. BlueSavings brings the reliability of traditional savings with the transparency of blockchain.
 
@@ -7,7 +7,7 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 **Network:** Base (Chain ID: 8453)  
 **Solidity:** ^0.8.24
 
-## ✨ Features
+## Features
 
 - **Time-Locked Vaults**: Set unlock timestamps to enforce savings discipline
 - **Goal-Based Vaults**: Define savings goals that must be reached before withdrawal
@@ -18,7 +18,7 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 - **Gas Optimized**: Built with modern Solidity patterns for Base's low-fee environment
 - **19 Helper Functions**: Comprehensive view functions for progress tracking and statistics
 
-## 🚀 Deployed Contracts
+## Deployed Contracts
 
 ### Base Mainnet (Production)
 - **Contract Address**: [0xf185cec4B72385CeaDE58507896E81F05E8b6c6a](https://basescan.org/address/0xf185cec4B72385CeaDE58507896E81F05E8b6c6a)
@@ -39,7 +39,7 @@ Both contracts are verified on BaseScan. You can:
 - Write to contract (connect wallet)
 - View all transactions
 
-## ⚡ Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -85,7 +85,7 @@ forge coverage
 forge fmt
 ```
 
-## 📖 Documentation
+## Documentation
 
 - [Architecture](./ARCHITECTURE.md) - Contract structure and design
 - [Contributing](./CONTRIBUTING.md) - How to contribute
@@ -282,16 +282,16 @@ This is experimental software. Use at your own risk. Always verify contract addr
 
 Built on Base
 
-## 🏆 Achievements
+## Achievements
 
-- ✅ Deployed on Base mainnet
-- ✅ Verified on BaseScan  
-- ✅ 55+ comprehensive tests
-- ✅ Gas optimized
-- ✅ Production ready
-- ✅ Full documentation
+- Deployed on Base mainnet
+- Verified on BaseScan  
+- 55+ comprehensive tests
+- Gas optimized
+- Production ready
+- Full documentation
 
-## 📊 Stats
+## Stats
 
 - **Test Coverage**: 100%
 - **Functions**: 28
@@ -300,26 +300,26 @@ Built on Base
 - **Gas Optimized**: Yes
 
 
-## 💬 Community
+## Community
 
 - GitHub Discussions: Ask questions and share ideas
 - Twitter: [@BlueSavings](https://twitter.com/bluesavings)
 - Discord: [Join our community](https://discord.gg/bluesavings)
 
 
-## 🔗 Links
+## Links
 
 - [Base Website](https://base.org)
 - [BaseScan Explorer](https://basescan.org)
 - [Foundry Book](https://book.getfoundry.sh/)
 
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Base team for the amazing L2 platform
 - Foundry for the development toolkit
