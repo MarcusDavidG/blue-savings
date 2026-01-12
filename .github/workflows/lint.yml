@@ -1,6 +1,10 @@
 name: Lint
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master, main, develop]
+  pull_request:
+    branches: [master, main, develop]
 
 jobs:
   lint:
@@ -10,6 +14,17 @@ jobs:
       
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
-      
-      - name: Run forge fmt check
+        
+      - name: Run formatter check
         run: forge fmt --check
+        
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Run Solhint
+        run: npm run lint
