@@ -1,3 +1,25 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Solidity files
 *.sol linguist-language=Solidity
-*.t.sol linguist-language=Solidity
-*.s.sol linguist-language=Solidity
+
+# Explicitly declare text files
+*.md text
+*.json text
+*.yml text
+*.yaml text
+*.toml text
+*.sh text
+
+# Denote binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.zip binary
+*.gz binary

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discord Community
+    url: https://discord.gg/bluesavings
+    about: Join our Discord for general questions and discussions
+  - name: Documentation
+    url: https://github.com/MarcusDavidG/blue-savings/tree/master/docs
+    about: Check our comprehensive documentation
+  - name: Security Issues
+    url: https://github.com/MarcusDavidG/blue-savings/security/policy
+    about: Report security vulnerabilities privately
