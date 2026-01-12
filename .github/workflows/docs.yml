@@ -19,7 +19,7 @@ jobs:
           use-quiet-mode: 'yes'
           
       - name: Lint markdown
-        uses: nosborn/github-action-markdown-cli@v3.2.0
+        uses: nosborn/github-action-markdown-cli@v3.5.0
         with:
           files: .
           config_file: .markdownlint.json
