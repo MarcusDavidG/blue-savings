@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "install:deps": "npm install"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.0.0",
