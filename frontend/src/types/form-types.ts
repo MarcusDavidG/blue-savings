@@ -9,7 +9,3 @@ export interface DepositForm {
   vaultId: string
   amount: string
 }
-
-export interface WithdrawForm {
-  vaultId: string
-}
