@@ -1,35 +1,35 @@
 # BlueSavings Frontend
 
-Next.js 14 frontend application for BlueSavings protocol.
+Next.js 14 frontend for BlueSavings decentralized savings protocol.
 
-## Features
-
-- Next.js 14 App Router
-- TypeScript
-- Tailwind CSS
-- Wallet Integration
-- Smart Contract Interaction
-- Real-time Updates
-
-## Getting Started
+## Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Structure
+## Features
 
-- `src/app` - Pages and routes
-- `src/components` - React components
-- `src/hooks` - Custom hooks
-- `src/utils` - Utility functions
-- `src/types` - TypeScript types
+- Wallet connectivity with RainbowKit
+- Contract interaction with wagmi
+- Real-time vault updates
+- Mobile-responsive design
+- Dark mode support
 
-## Development
+## Tech Stack
 
-```bash
-npm run dev     # Start dev server
-npm run build   # Build for production
-npm run lint    # Run linter
-```
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- wagmi & viem
+- RainbowKit
+- React Query
+
+## Learn More
+
+- [Architecture](./docs/ARCHITECTURE.md)
+- [Wallet Integration](./docs/WALLET_INTEGRATION.md)
+- [Contract Integration](./docs/CONTRACT_INTEGRATION.md)
+- [Testing](./docs/TESTING.md)
+- [Deployment](./docs/DEPLOYMENT_GUIDE.md)
