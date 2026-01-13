@@ -18,6 +18,10 @@ A decentralized savings vault protocol built natively on Base. Create time-locke
 - **Gas Optimized**: Built with modern Solidity patterns for Base's low-fee environment
 - **19 Helper Functions**: Comprehensive view functions for progress tracking and statistics
 
+## Automation Policy
+
+This project uses **manual dependency management** instead of automated bots. Dependencies and updates are reviewed and tested before integration to ensure code quality and security. See [BOTS.md](./.github/BOTS.md) for details.
+
 ## Deployed Contracts
 
 ### Base Mainnet (Production)
