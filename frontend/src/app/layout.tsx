@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Web3Provider } from '@/providers/Web3Provider'
 
 export const metadata: Metadata = {
   title: 'BlueSavings - Decentralized Savings Vaults',
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ minHeight: '100vh', background: '#f9fafb' }}>
-        <main>{children}</main>
+        <Web3Provider>
+          <main>{children}</main>
+        </Web3Provider>
       </body>
     </html>
   )
