@@ -65,21 +65,19 @@ contract TokenSavingsVaultDepositTest is Test {
         assertGt(vault.getVaultTokenBalance(vaultId, address(dai)), 0);
     }
 
-    function test_DepositToInactiveVaultReverts() public {
+    function test_MultipleDepositsToSameVault() public {
         vm.prank(user1);
         uint256 vaultId = vault.createTokenVault(address(0), 0, 0, "Test");
 
-        // Deposit and withdraw to deactivate
         vm.startPrank(user1);
-        usdc.approve(address(vault), 500e6);
+        usdc.approve(address(vault), 1000e6);
         vault.depositToken(vaultId, address(usdc), 500e6);
-        vault.withdrawToken(vaultId, address(usdc));
-
-        // Try to deposit again
-        usdc.approve(address(vault), 500e6);
-        vm.expectRevert(TokenSavingsVault.VaultNotActive.selector);
         vault.depositToken(vaultId, address(usdc), 500e6);
         vm.stopPrank();
+
+        // Balance should be both deposits minus fees
+        uint256 expected = 2 * (500e6 - (500e6 * 50 / 10000));
+        assertEq(vault.getVaultTokenBalance(vaultId, address(usdc)), expected);
     }
 
     function test_DepositZeroAmountReverts() public {

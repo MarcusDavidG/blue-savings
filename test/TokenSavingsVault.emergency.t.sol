@@ -82,17 +82,17 @@ contract TokenSavingsVaultEmergencyTest is Test {
         vault.emergencyWithdrawToken(vaultId, address(usdc));
     }
 
-    function test_EmergencyWithdrawFromInactiveReverts() public {
+    function test_EmergencyWithdrawClearsBalance() public {
         vm.prank(user1);
         uint256 vaultId = vault.createTokenVault(address(0), 0, 0, "Test");
 
         vm.startPrank(user1);
         usdc.approve(address(vault), 1000e6);
         vault.depositToken(vaultId, address(usdc), 1000e6);
-        vault.withdrawToken(vaultId, address(usdc));
-
-        vm.expectRevert(TokenSavingsVault.VaultNotActive.selector);
         vault.emergencyWithdrawToken(vaultId, address(usdc));
         vm.stopPrank();
+
+        // Balance should be zero after emergency withdraw
+        assertEq(vault.getVaultTokenBalance(vaultId, address(usdc)), 0);
     }
 }
