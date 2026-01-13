@@ -26,6 +26,16 @@ forge install
 forge test -vv
 ```
 
+## Dependency Management
+
+This project uses **manual dependency management**. Automated bots (Dependabot, auto-merge) are disabled to maintain strict quality control. When updating dependencies:
+
+1. Test thoroughly in a separate branch
+2. Review changelogs and breaking changes
+3. Update lockfiles and check for conflicts
+4. Run full test suite before submitting PR
+5. Document dependency changes in PR description
+
 ## Code Style
 
 - Follow Solidity style guide
