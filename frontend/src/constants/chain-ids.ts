@@ -1,0 +1,6 @@
+export const CHAIN_IDS = {
+  BASE_MAINNET: 8453,
+  BASE_SEPOLIA: 84532,
+} as const
+
+export const DEFAULT_CHAIN_ID = CHAIN_IDS.BASE_MAINNET
