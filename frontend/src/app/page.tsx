@@ -1,21 +1,48 @@
 'use client'
 
+import { useState } from 'react'
+
 export default function HomePage() {
+  const [showWalletMessage, setShowWalletMessage] = useState(false)
+
   const handleConnectWallet = () => {
     console.log('Connect Wallet clicked!')
-    alert('Wallet connection coming soon! We need to:\n\n1. Set up RainbowKit provider\n2. Configure wagmi with Base chain\n3. Add wallet connectors (MetaMask, WalletConnect, Coinbase)\n\nFor now, this is a preview of the UI.')
+    setShowWalletMessage(true)
+    setTimeout(() => setShowWalletMessage(false), 5000)
   }
 
   const handleLearnMore = () => {
     console.log('Learn More clicked!')
     window.open('https://github.com/MarcusDavidG/blue-savings', '_blank')
   }
-  
-  // Log on mount to verify component is client-side
-  console.log('HomePage component rendered')
 
   return (
     <div style={{ padding: '4rem 1rem', textAlign: 'center' }}>
+      {showWalletMessage && (
+        <div style={{
+          position: 'fixed',
+          top: '2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#0052FF',
+          color: 'white',
+          padding: '1.5rem 2rem',
+          borderRadius: '0.5rem',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          zIndex: 1000,
+          maxWidth: '500px'
+        }}>
+          <h3 style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>🎉 Wallet Connection Coming Soon!</h3>
+          <p style={{ fontSize: '0.875rem' }}>
+            We need to set up RainbowKit provider, configure wagmi with Base chain, 
+            and add wallet connectors (MetaMask, WalletConnect, Coinbase).
+          </p>
+          <p style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
+            For now, this is a preview of the UI. ✨
+          </p>
+        </div>
+      )}
+      
       <h1 style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1.5rem', color: '#0052FF' }}>
         BlueSavings
       </h1>
