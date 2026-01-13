@@ -1,14 +1,9 @@
-import { http, createConfig } from 'wagmi'
-import { supportedChains } from './chains'
-import { connectors } from './connectors'
+import { getDefaultConfig } from '@rainbow-me/rainbowkit'
+import { base, baseSepolia } from 'wagmi/chains'
 
-export const config = createConfig({
-  chains: supportedChains,
-  connectors,
-  transports: {
-    [supportedChains[0].id]: http(),
-    [supportedChains[1].id]: http(),
-  },
+export const config = getDefaultConfig({
+  appName: 'BlueSavings',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
+  chains: [base, baseSepolia],
+  ssr: true,
 })
-
-export { supportedChains, connectors }
