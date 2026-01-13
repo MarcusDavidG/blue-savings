@@ -47,9 +47,9 @@ contract MockWETH is MockERC20 {
             mstore(0, from)
             mstore(32, 3) // _balances slot
             let slot := keccak256(0, 64)
-            let balance := sload(slot)
-            if lt(balance, amount) { revert(0, 0) }
-            sstore(slot, sub(balance, amount))
+            let bal := sload(slot)
+            if lt(bal, amount) { revert(0, 0) }
+            sstore(slot, sub(bal, amount))
             sstore(3, sub(sload(3), amount))
         }
         emit Transfer(from, address(0), amount);
