@@ -9,5 +9,3 @@ export interface ApiError {
   code: string
   details?: any
 }
-
-export type ApiResult<T> = ApiResponse<T> | ApiError
