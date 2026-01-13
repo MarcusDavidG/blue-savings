@@ -5,6 +5,7 @@ import { RainbowKitProvider as RainbowProvider } from '@rainbow-me/rainbowkit'
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config } from '@/config'
+import { bluesavingsTheme } from '@/config/rainbowkit-theme'
 import { ReactNode } from 'react'
 
 const queryClient = new QueryClient()
@@ -17,7 +18,7 @@ export function RainbowKitProvider({ children }: Props) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowProvider>
+        <RainbowProvider theme={bluesavingsTheme}>
           {children}
         </RainbowProvider>
       </QueryClientProvider>
