@@ -13,12 +13,11 @@ library SVGRenderer {
         uint256 balance,
         uint256 goalAmount,
         uint256 unlockTimestamp,
-        string memory tokenSymbol
+        string memory tokenSymbol,
+        bool isUnlocked
     ) internal pure returns (string memory) {
         string memory progressBar = _generateProgressBar(balance, goalAmount);
-        string memory status = unlockTimestamp == 0 || block.timestamp >= unlockTimestamp 
-            ? "Unlocked" 
-            : "Locked";
+        string memory status = isUnlocked ? "Unlocked" : "Locked";
 
         return string(abi.encodePacked(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">',
