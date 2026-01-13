@@ -1,3 +1,0 @@
-# FUNCTIONS
-
-Detailed documentation for FUNCTIONS...

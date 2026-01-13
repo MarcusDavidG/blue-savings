@@ -1,1 +1,0 @@
-# ViewFunctions Reference

@@ -1,3 +1,0 @@
-# TROUBLESHOOTING
-
-Documentation coming soon...

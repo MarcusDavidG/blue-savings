@@ -1,3 +1,0 @@
-# MODIFIERS
-
-Detailed documentation for MODIFIERS...

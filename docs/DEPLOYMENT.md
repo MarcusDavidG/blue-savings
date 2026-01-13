@@ -1,3 +1,0 @@
-# DEPLOYMENT
-
-Documentation coming soon...
