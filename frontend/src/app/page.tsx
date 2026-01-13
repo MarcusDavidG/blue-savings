@@ -2,12 +2,17 @@
 
 export default function HomePage() {
   const handleConnectWallet = () => {
+    console.log('Connect Wallet clicked!')
     alert('Wallet connection coming soon! We need to:\n\n1. Set up RainbowKit provider\n2. Configure wagmi with Base chain\n3. Add wallet connectors (MetaMask, WalletConnect, Coinbase)\n\nFor now, this is a preview of the UI.')
   }
 
   const handleLearnMore = () => {
+    console.log('Learn More clicked!')
     window.open('https://github.com/MarcusDavidG/blue-savings', '_blank')
   }
+  
+  // Log on mount to verify component is client-side
+  console.log('HomePage component rendered')
 
   return (
     <div style={{ padding: '4rem 1rem', textAlign: 'center' }}>
