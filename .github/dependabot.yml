@@ -1,17 +1,21 @@
-version: 2
-updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "github-actions"
+# Dependabot has been disabled for this project
+# Dependencies are managed manually to maintain better control
+# over the codebase and ensure thorough testing before updates
 
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "npm"
+# version: 2
+# updates:
+#   - package-ecosystem: "github-actions"
+#     directory: "/"
+#     schedule:
+#       interval: "weekly"
+#     labels:
+#       - "dependencies"
+#       - "github-actions"
+#
+#   - package-ecosystem: "npm"
+#     directory: "/"
+#     schedule:
+#       interval: "weekly"
+#     labels:
+#       - "dependencies"
+#       - "npm"
