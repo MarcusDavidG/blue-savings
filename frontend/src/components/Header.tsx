@@ -2,6 +2,11 @@
 
 import Link from 'next/link'
 
+/**
+ * A component to display the header of the application.
+ * It includes the application logo/name and navigation links.
+ * @returns {JSX.Element} The Header component.
+ */
 export function Header() {
   return (
     <header style={{
@@ -16,12 +21,14 @@ export function Header() {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
+        {/* Application Logo/Name */}
         <Link href="/" style={{ textDecoration: 'none' }}>
           <h1 style={{ color: '#0052FF', fontSize: '1.5rem', fontWeight: 'bold' }}>
             BlueSavings
           </h1>
         </Link>
         
+        {/* Navigation Links */}
         <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
           <Link href="/dashboard" style={{ color: '#4B5563', textDecoration: 'none' }}>
             Dashboard
