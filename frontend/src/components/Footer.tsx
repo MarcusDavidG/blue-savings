@@ -1,3 +1,7 @@
+/**
+ * A component to display the footer.
+ * @returns {JSX.Element} The Footer component.
+ */
 export function Footer() {
   return (
     <footer style={{
@@ -13,12 +17,14 @@ export function Footer() {
         color: '#6B7280'
       }}>
         <p style={{ marginBottom: '1rem' }}>
-          BlueSavings - Decentralized Savings Vaults on Base
+          <strong>BlueSavings</strong> - Decentralized Savings Vaults on Base
         </p>
-        <p style={{ fontSize: '0.875rem' }}>
-          Contract: 0xf185cec4B72385CeaDE58507896E81F05E8b6c6a
-        </p>
-        <p style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
+        <div style={{ marginBottom: '1rem' }}>
+          <p style={{ fontSize: '0.875rem' }}>
+            Contract Address: 0xf185cec4B72385CeaDE58507896E81F05E8b6c6a
+          </p>
+        </div>
+        <div>
           <a 
             href="https://basescan.org/address/0xf185cec4B72385CeaDE58507896E81F05E8b6c6a" 
             target="_blank" 
@@ -27,7 +33,7 @@ export function Footer() {
           >
             View on BaseScan
           </a>
-        </p>
+        </div>
       </div>
     </footer>
   )
