@@ -19,9 +19,13 @@ abstract contract BatchOperations {
     /// @notice Thrown when batch exceeds maximum size
     error BatchSizeTooLarge(uint256 size);
 
-    /// @notice Validate batch operation parameters
-    /// @param tokens Array of token addresses
-    /// @param amounts Array of amounts
+    /**
+     * @notice Validate batch operation parameters for operations involving tokens and amounts.
+     * @dev This modifier ensures that the input arrays are not empty, have matching lengths,
+     * and do not exceed the maximum batch size.
+     * @param tokens Array of token addresses.
+     * @param amounts Array of amounts corresponding to each token.
+     */
     modifier validBatch(address[] calldata tokens, uint256[] calldata amounts) {
         if (tokens.length == 0) revert EmptyBatch();
         if (tokens.length != amounts.length) revert BatchArrayLengthMismatch();
@@ -29,8 +33,11 @@ abstract contract BatchOperations {
         _;
     }
 
-    /// @notice Validate single array batch
-    /// @param items Array to validate
+    /**
+     * @notice Validate single array batch for operations involving a single array of items.
+     * @dev This modifier ensures that the input array is not empty and does not exceed the maximum batch size.
+     * @param items Array to validate.
+     */
     modifier validSingleBatch(address[] calldata items) {
         if (items.length == 0) revert EmptyBatch();
         if (items.length > MAX_BATCH_SIZE) revert BatchSizeTooLarge(items.length);
