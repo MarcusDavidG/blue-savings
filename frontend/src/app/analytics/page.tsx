@@ -1,3 +1,4 @@
+// This is the analytics page.
 export default function AnalyticsPage() {
-  return <div>analytics page</div>
+  return <div>This is the analytics page.</div>
 }
