@@ -10,8 +10,10 @@ import "./RecurringDepositErrors.sol";
 
 /**
  * @title RecurringDeposit
- * @notice Automated recurring deposits for savings vaults
- * @dev Chainlink Automation compatible for scheduled execution
+ * @notice Manages automated recurring deposits for savings vaults using Chainlink Automation.
+ * @dev This contract allows users to create, pause, resume, and cancel recurring deposit
+ * schedules. It is designed to be compatible with Chainlink Automation for scheduled
+ * execution of these deposits.
  */
 contract RecurringDeposit is 
     RecurringDepositStorage, 
@@ -21,36 +23,60 @@ contract RecurringDeposit is
 {
     using SafeERC20 for IERC20;
 
-    /// @notice Maximum schedules per user
+    /// @notice The maximum number of active or paused schedules a user can have.
     uint256 public constant MAX_SCHEDULES_PER_USER = 10;
 
-    /// @notice Target vault contract address
+    /// @notice The address of the target vault contract where funds will be deposited.
     address public immutable vaultContract;
 
-    /// @notice Contract owner
+    /// @notice The address of the contract owner, with privileges to manage the contract.
     address public owner;
 
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
         _;
     }
 
+    /**
+     * @dev Throws if the caller is not the owner of the specified schedule.
+     * @param scheduleId The ID of the schedule to check ownership of.
+     */
     modifier onlyScheduleOwner(uint256 scheduleId) {
         if (schedules[scheduleId].owner != msg.sender) revert NotScheduleOwner();
         _;
     }
 
+    /**
+     * @dev Throws if a schedule with the given ID does not exist.
+     * @param scheduleId The ID of the schedule to check.
+     */
     modifier scheduleExists(uint256 scheduleId) {
         if (schedules[scheduleId].owner == address(0)) revert ScheduleNotFound(scheduleId);
         _;
     }
 
+    /**
+     * @notice Sets the address of the vault contract and the contract owner.
+     * @param _vaultContract The address of the vault contract.
+     */
     constructor(address _vaultContract) {
         vaultContract = _vaultContract;
         owner = msg.sender;
     }
 
-    /// @notice Create a new recurring deposit schedule
+    /**
+     * @notice Creates a new recurring deposit schedule.
+     * @param vaultId The ID of the vault to deposit into.
+     * @param token The address of the ERC20 token for the deposit.
+     * @param amount The amount of tokens to be deposited in each execution.
+     * @param frequency The frequency of the recurring deposit (e.g., daily, weekly).
+     * @param totalExecutions The total number of times the deposit should be executed.
+     * @param startTime The timestamp when the first deposit should be executed.
+     * @return scheduleId The ID of the newly created schedule.
+     */
     function createSchedule(
         uint256 vaultId,
         address token,
@@ -88,7 +114,11 @@ contract RecurringDeposit is
         emit ScheduleCreated(scheduleId, msg.sender, vaultId, token, amount, frequency);
     }
 
-    /// @notice Pause a schedule
+    /**
+     * @notice Pauses an active recurring deposit schedule.
+     * @dev Only the owner of the schedule can pause it.
+     * @param scheduleId The ID of the schedule to pause.
+     */
     function pauseSchedule(uint256 scheduleId) 
         external 
         scheduleExists(scheduleId) 
@@ -101,7 +131,11 @@ contract RecurringDeposit is
         emit SchedulePaused(scheduleId);
     }
 
-    /// @notice Resume a paused schedule
+    /**
+     * @notice Resumes a paused recurring deposit schedule.
+     * @dev Only the owner of the schedule can resume it. The next execution is set to the current time.
+     * @param scheduleId The ID of the schedule to resume.
+     */
     function resumeSchedule(uint256 scheduleId) 
         external 
         scheduleExists(scheduleId) 
@@ -115,7 +149,11 @@ contract RecurringDeposit is
         emit ScheduleResumed(scheduleId);
     }
 
-    /// @notice Cancel a schedule
+    /**
+     * @notice Cancels a recurring deposit schedule.
+     * @dev A canceled schedule cannot be resumed or executed.
+     * @param scheduleId The ID of the schedule to cancel.
+     */
     function cancelSchedule(uint256 scheduleId) 
         external 
         scheduleExists(scheduleId) 
@@ -125,8 +163,14 @@ contract RecurringDeposit is
         emit ScheduleCancelled(scheduleId);
     }
 
-    /// @notice Check if any schedules need execution (Chainlink Automation)
-    function checkUpkeep(bytes calldata) 
+    /**
+     * @notice Called by Chainlink Automation to check if any schedules need execution.
+     * @dev This function iterates through all schedules and returns `true` if any are ready to be executed.
+     * @param checkData Arbitrary data sent by the Chainlink node, not used here.
+     * @return upkeepNeeded A boolean indicating if an update is needed.
+     * @return performData The data to be passed to `performUpkeep`, encoding the schedule ID.
+     */
+    function checkUpkeep(bytes calldata checkData) 
         external 
         view 
         override 
@@ -141,13 +185,22 @@ contract RecurringDeposit is
         return (false, "");
     }
 
-    /// @notice Execute a due schedule (Chainlink Automation)
+    /**
+     * @notice Called by Chainlink Automation to execute a due schedule.
+     * @dev This function decodes the schedule ID from `performData` and calls `executeSchedule`.
+     * @param performData The data returned from `checkUpkeep`, containing the schedule ID.
+     */
     function performUpkeep(bytes calldata performData) external override {
         uint256 scheduleId = abi.decode(performData, (uint256));
         executeSchedule(scheduleId);
     }
 
-    /// @notice Manually execute a schedule
+    /**
+     * @notice Manually executes a recurring deposit schedule.
+     * @dev This can be called by anyone, but it will only execute if the schedule is due.
+     * It transfers tokens from the schedule owner, approves the vault, and deposits the funds.
+     * @param scheduleId The ID of the schedule to execute.
+     */
     function executeSchedule(uint256 scheduleId) public scheduleExists(scheduleId) {
         Schedule storage schedule = schedules[scheduleId];
         
@@ -194,7 +247,13 @@ contract RecurringDeposit is
         }
     }
 
-    /// @notice Check if schedule is ready for execution
+    /**
+     * @notice Checks if a schedule is ready for execution.
+     * @dev A schedule is executable if it's active, the current time is past its next execution time,
+     * and it has not yet completed all its scheduled executions.
+     * @param schedule The schedule to check.
+     * @return A boolean indicating if the schedule is executable.
+     */
     function _isExecutable(Schedule memory schedule) internal view returns (bool) {
         return schedule.status == ScheduleStatus.Active && 
                block.timestamp >= schedule.nextExecution &&
