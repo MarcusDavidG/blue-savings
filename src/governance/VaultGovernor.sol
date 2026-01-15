@@ -29,10 +29,14 @@ contract VaultGovernor {
     mapping(uint256 => Proposal) public proposals;
     mapping(uint256 => mapping(address => bool)) public hasVoted;
     mapping(address => uint256) public votingPower;
+    mapping(address => address) public delegates;
+    mapping(address => uint256) public delegatedPower;
 
     event ProposalCreated(uint256 indexed proposalId, address proposer, string description);
     event VoteCast(address indexed voter, uint256 indexed proposalId, bool support, uint256 weight);
     event ProposalExecuted(uint256 indexed proposalId);
+    event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate);
+    event DelegateVotesChanged(address indexed delegate, uint256 previousBalance, uint256 newBalance);
 
     error AlreadyVoted();
     error ProposalNotActive();
@@ -90,5 +94,34 @@ contract VaultGovernor {
 
     function setVotingPower(address account, uint256 power) external {
         votingPower[account] = power;
+    }
+
+    /// @notice Delegate voting power to another address
+    function delegate(address delegatee) external {
+        address currentDelegate = delegates[msg.sender];
+        uint256 delegatorBalance = votingPower[msg.sender];
+
+        delegates[msg.sender] = delegatee;
+
+        emit DelegateChanged(msg.sender, currentDelegate, delegatee);
+
+        // Remove power from old delegate
+        if (currentDelegate != address(0)) {
+            uint256 oldPower = delegatedPower[currentDelegate];
+            delegatedPower[currentDelegate] = oldPower - delegatorBalance;
+            emit DelegateVotesChanged(currentDelegate, oldPower, delegatedPower[currentDelegate]);
+        }
+
+        // Add power to new delegate
+        if (delegatee != address(0)) {
+            uint256 oldPower = delegatedPower[delegatee];
+            delegatedPower[delegatee] = oldPower + delegatorBalance;
+            emit DelegateVotesChanged(delegatee, oldPower, delegatedPower[delegatee]);
+        }
+    }
+
+    /// @notice Get total voting power including delegations
+    function getVotes(address account) external view returns (uint256) {
+        return votingPower[account] + delegatedPower[account];
     }
 }
