@@ -26,6 +26,8 @@ abstract contract BaseYieldAdapter is IYieldAdapter {
     event TokenSupported(address indexed token, bool supported);
     event Deposited(address indexed token, uint256 amount, uint256 shares);
     event Withdrawn(address indexed token, uint256 amount);
+    event YieldHarvested(address indexed token, uint256 amount);
+    event RewardsCompounded(address indexed token, uint256 amount);
 
     // Errors
     error Unauthorized();
@@ -77,5 +79,30 @@ abstract contract BaseYieldAdapter is IYieldAdapter {
     /// @notice Rescue stuck tokens (emergency)
     function rescueTokens(address token, uint256 amount) external onlyOwner {
         IERC20(token).safeTransfer(owner, amount);
+    }
+
+    /// @notice Harvest yield from protocol
+    /// @param token Token to harvest yield for
+    /// @return harvested Amount of yield harvested
+    function harvest(address token) external virtual onlyVault returns (uint256 harvested) {
+        harvested = _harvest(token);
+        if (harvested > 0) {
+            emit YieldHarvested(token, harvested);
+        }
+    }
+
+    /// @notice Internal harvest implementation (override in adapters)
+    function _harvest(address) internal virtual returns (uint256) {
+        return 0;
+    }
+
+    /// @notice Get pending yield that can be harvested
+    function getPendingYield(address token) external view virtual returns (uint256) {
+        return _getPendingYield(token);
+    }
+
+    /// @notice Internal pending yield check
+    function _getPendingYield(address) internal view virtual returns (uint256) {
+        return 0;
     }
 }
