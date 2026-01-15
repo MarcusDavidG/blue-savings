@@ -4,13 +4,14 @@ pragma solidity ^0.8.24;
 import "../interfaces/IYieldAdapter.sol";
 import "../interfaces/IERC20.sol";
 import "../libraries/SafeERC20.sol";
+import "../utils/Pausable.sol";
 
 /**
  * @title YieldManager
  * @notice Manages yield strategies for vault deposits
  * @dev Routes deposits to optimal yield protocols
  */
-contract YieldManager {
+contract YieldManager is Pausable {
     using SafeERC20 for IERC20;
 
     /// @notice Available yield adapters
@@ -85,7 +86,7 @@ contract YieldManager {
     }
 
     /// @notice Deposit tokens into yield protocol
-    function depositToYield(address token, uint256 amount) external onlyVault {
+    function depositToYield(address token, uint256 amount) external onlyVault whenNotPaused {
         address adapter = preferredAdapter[token];
         if (adapter == address(0)) revert NoAdapterForToken();
 
@@ -158,6 +159,24 @@ contract YieldManager {
 
         IYieldAdapter(adapter).deposit(token, amount);
         emit YieldDeposited(token, adapter, amount);
+    }
+
+    /// @notice Emergency pause - stops all yield operations
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    /// @notice Unpause yield operations
+    function unpause() external onlyOwner {
+        _unpause();
+    }
+
+    /// @notice Emergency withdraw all funds from an adapter
+    function emergencyWithdrawAll(address adapter, address token) external onlyOwner {
+        uint256 balance = IYieldAdapter(adapter).getBalance(token, address(this));
+        if (balance > 0) {
+            IYieldAdapter(adapter).withdraw(token, balance);
+        }
     }
 
     /// @notice Compare APYs across all adapters for a token
