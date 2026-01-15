@@ -43,4 +43,36 @@ abstract contract BatchOperations {
         if (items.length > MAX_BATCH_SIZE) revert BatchSizeTooLarge(items.length);
         _;
     }
+
+    /// @notice Batch operation result
+    struct BatchResult {
+        uint256 successCount;
+        uint256 failCount;
+        bool[] results;
+    }
+
+    /// @notice Execute batch with failure tolerance
+    function _executeBatchWithTolerance(
+        address[] calldata targets,
+        bytes[] calldata datas,
+        bool allowFailures
+    ) internal returns (BatchResult memory result) {
+        require(targets.length == datas.length, "Length mismatch");
+
+        result.results = new bool[](targets.length);
+
+        for (uint256 i = 0; i < targets.length; i++) {
+            (bool success,) = targets[i].call(datas[i]);
+            result.results[i] = success;
+
+            if (success) {
+                result.successCount++;
+            } else {
+                result.failCount++;
+                if (!allowFailures) {
+                    revert("Batch operation failed");
+                }
+            }
+        }
+    }
 }
