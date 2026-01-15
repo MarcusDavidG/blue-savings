@@ -35,7 +35,15 @@ abstract contract RecurringDepositTypes {
         uint256 executedCount;
         ScheduleStatus status;
         uint256 createdAt;
+        uint256 failedAttempts;
+        uint256 lastFailureTime;
     }
+
+    /// @notice Maximum retry attempts before pausing schedule
+    uint256 public constant MAX_RETRY_ATTEMPTS = 3;
+
+    /// @notice Retry delay after failed attempt (1 hour)
+    uint256 public constant RETRY_DELAY = 1 hours;
 
     /// @notice Get interval in seconds for frequency
     /// @param freq The frequency enum value
