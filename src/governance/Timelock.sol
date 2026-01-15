@@ -89,4 +89,52 @@ contract Timelock {
     }
 
     receive() external payable {}
+
+    /// @notice Queue multiple transactions in batch
+    function queueBatch(
+        address[] calldata targets,
+        uint256[] calldata values,
+        bytes[] calldata datas,
+        uint256 eta
+    ) external onlyAdmin returns (bytes32[] memory txHashes) {
+        require(targets.length == values.length && values.length == datas.length, "Length mismatch");
+        if (eta < block.timestamp + delay) revert DelayNotSatisfied();
+
+        txHashes = new bytes32[](targets.length);
+
+        for (uint256 i = 0; i < targets.length; i++) {
+            bytes32 txHash = keccak256(abi.encode(targets[i], values[i], datas[i], eta));
+            queuedTransactions[txHash] = true;
+            txHashes[i] = txHash;
+            emit QueueTransaction(txHash, targets[i], values[i], datas[i], eta);
+        }
+    }
+
+    /// @notice Execute multiple transactions in batch
+    function executeBatch(
+        address[] calldata targets,
+        uint256[] calldata values,
+        bytes[] calldata datas,
+        uint256 eta
+    ) external payable onlyAdmin returns (bytes[] memory results) {
+        require(targets.length == values.length && values.length == datas.length, "Length mismatch");
+
+        results = new bytes[](targets.length);
+
+        for (uint256 i = 0; i < targets.length; i++) {
+            bytes32 txHash = keccak256(abi.encode(targets[i], values[i], datas[i], eta));
+
+            if (!queuedTransactions[txHash]) revert TransactionNotQueued();
+            if (block.timestamp < eta) revert DelayNotSatisfied();
+            if (block.timestamp > eta + 14 days) revert TransactionStale();
+
+            queuedTransactions[txHash] = false;
+
+            (bool success, bytes memory returnData) = targets[i].call{value: values[i]}(datas[i]);
+            if (!success) revert ExecutionFailed();
+
+            results[i] = returnData;
+            emit ExecuteTransaction(txHash, targets[i], values[i], datas[i], eta);
+        }
+    }
 }
