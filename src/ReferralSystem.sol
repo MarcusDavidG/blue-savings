@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import "./ReferralStorage.sol";
 import "./ReferralEvents.sol";
 import "./ReferralErrors.sol";
+import "./interfaces/IERC721.sol";
 
 /**
  * @title ReferralSystem
@@ -150,5 +151,41 @@ contract ReferralSystem is ReferralStorage, ReferralEvents, ReferralErrors {
     receive() external payable {
         rewardsPool += msg.value;
         emit RewardsPoolFunded(msg.sender, msg.value);
+    }
+
+    /// @notice NFT contract for referral badges
+    address public referralBadgeNFT;
+
+    /// @notice Track minted badges per tier per user
+    mapping(address => mapping(ReferralTier => bool)) public mintedBadges;
+
+    event ReferralBadgeMinted(address indexed referrer, ReferralTier tier, uint256 tokenId);
+
+    /// @notice Set the referral badge NFT contract
+    function setReferralBadgeNFT(address nft) external onlyOwner {
+        referralBadgeNFT = nft;
+    }
+
+    /// @notice Mint referral badge NFT when reaching new tier
+    function claimTierBadge(ReferralTier tier) external {
+        require(referralBadgeNFT != address(0), "Badge NFT not set");
+        require(uint8(referrers[msg.sender].tier) >= uint8(tier), "Tier not reached");
+        require(!mintedBadges[msg.sender][tier], "Badge already claimed");
+
+        mintedBadges[msg.sender][tier] = true;
+
+        // Mint NFT (assumes NFT contract has mint function)
+        (bool success, bytes memory data) = referralBadgeNFT.call(
+            abi.encodeWithSignature("mint(address,uint256)", msg.sender, uint256(tier))
+        );
+        require(success, "Badge mint failed");
+
+        uint256 tokenId = abi.decode(data, (uint256));
+        emit ReferralBadgeMinted(msg.sender, tier, tokenId);
+    }
+
+    /// @notice Check if user can claim a badge
+    function canClaimBadge(address referrer, ReferralTier tier) external view returns (bool) {
+        return uint8(referrers[referrer].tier) >= uint8(tier) && !mintedBadges[referrer][tier];
     }
 }
