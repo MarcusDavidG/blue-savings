@@ -21,6 +21,9 @@ abstract contract RecurringDepositStorage is RecurringDepositTypes {
     /// @notice Mapping of vault to its schedule IDs
     mapping(uint256 => uint256[]) public vaultSchedules;
 
+    /// @notice Minimum deposit amount per token (prevents dust deposits)
+    mapping(address => uint256) public minDepositAmount;
+
     /// @notice Get schedule by ID
     function getSchedule(uint256 scheduleId) external view returns (Schedule memory) {
         return schedules[scheduleId];
@@ -44,5 +47,15 @@ abstract contract RecurringDepositStorage is RecurringDepositTypes {
                 count++;
             }
         }
+    }
+
+    /// @notice Internal: Set minimum deposit for a token
+    function _setMinDeposit(address token, uint256 amount) internal {
+        minDepositAmount[token] = amount;
+    }
+
+    /// @notice Check if amount meets minimum threshold
+    function meetsMinimum(address token, uint256 amount) public view returns (bool) {
+        return amount >= minDepositAmount[token];
     }
 }
