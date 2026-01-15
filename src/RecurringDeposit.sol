@@ -259,4 +259,30 @@ contract RecurringDeposit is
                block.timestamp >= schedule.nextExecution &&
                schedule.executedCount < schedule.totalExecutions;
     }
+
+    /**
+     * @notice Estimates gas required for executing a schedule
+     * @dev Used by automation nodes to determine gas limits
+     * @return gasEstimate Estimated gas for executeSchedule
+     */
+    function estimateExecutionGas() external pure returns (uint256 gasEstimate) {
+        // Base gas: ~21000 for transaction
+        // Token transfer: ~65000
+        // Approval: ~45000
+        // Vault deposit: ~100000
+        // State updates: ~20000
+        return 300000;
+    }
+
+    /**
+     * @notice Get count of pending executions across all active schedules
+     * @return count Number of schedules ready to execute
+     */
+    function getPendingExecutionCount() external view returns (uint256 count) {
+        for (uint256 i = 0; i < scheduleCounter; i++) {
+            if (_isExecutable(schedules[i])) {
+                count++;
+            }
+        }
+    }
 }
