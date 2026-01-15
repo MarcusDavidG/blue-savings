@@ -82,4 +82,47 @@ contract RewardDistributor {
         if (epochs[epoch].totalShares == 0) return 0;
         return (epochs[epoch].totalRewards * userShares[epoch][user]) / epochs[epoch].totalShares;
     }
+
+    /// @notice Claim rewards for multiple epochs
+    function claimMultipleRewards(uint256[] calldata epochIds) external {
+        uint256 totalReward;
+
+        for (uint256 i = 0; i < epochIds.length; i++) {
+            uint256 epoch = epochIds[i];
+
+            if (block.timestamp < epochs[epoch].endTime) continue;
+            if (hasClaimed[epoch][msg.sender]) continue;
+            if (userShares[epoch][msg.sender] == 0) continue;
+
+            hasClaimed[epoch][msg.sender] = true;
+
+            uint256 reward = (epochs[epoch].totalRewards * userShares[epoch][msg.sender]) / epochs[epoch].totalShares;
+            totalReward += reward;
+
+            emit RewardClaimed(epoch, msg.sender, reward);
+        }
+
+        if (totalReward > 0) {
+            rewardToken.safeTransfer(msg.sender, totalReward);
+        }
+    }
+
+    /// @notice Get claimable epochs for user
+    function getClaimableEpochs(address user) external view returns (uint256[] memory) {
+        uint256 count;
+        for (uint256 i = 1; i <= currentEpoch; i++) {
+            if (!hasClaimed[i][user] && userShares[i][user] > 0 && block.timestamp >= epochs[i].endTime) {
+                count++;
+            }
+        }
+
+        uint256[] memory claimable = new uint256[](count);
+        uint256 idx;
+        for (uint256 i = 1; i <= currentEpoch; i++) {
+            if (!hasClaimed[i][user] && userShares[i][user] > 0 && block.timestamp >= epochs[i].endTime) {
+                claimable[idx++] = i;
+            }
+        }
+        return claimable;
+    }
 }
