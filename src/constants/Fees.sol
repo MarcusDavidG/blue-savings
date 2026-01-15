@@ -19,4 +19,15 @@ library Fees {
     function amountAfterFee(uint256 amount, uint256 feeBps) internal pure returns (uint256) {
         return amount - calculateFee(amount, feeBps);
     }
+
+    /// @notice Yield performance fee (taken from yield profits)
+    uint256 public constant YIELD_PERFORMANCE_FEE_BPS = 500; // 5%
+
+    /// @notice Early withdrawal penalty
+    uint256 public constant EARLY_WITHDRAWAL_PENALTY_BPS = 100; // 1%
+
+    /// @notice Calculate yield performance fee
+    function calculateYieldFee(uint256 yieldAmount) internal pure returns (uint256) {
+        return (yieldAmount * YIELD_PERFORMANCE_FEE_BPS) / BPS_DENOMINATOR;
+    }
 }
