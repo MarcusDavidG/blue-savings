@@ -295,13 +295,35 @@ This is experimental software. Use at your own risk. Always verify contract addr
 ## Roadmap
 
 - [ ] Frontend UI for easy interaction
-- [ ] ERC-20 token support (USDC, DAI)
-- [ ] Recurring deposit automation
+- [x] ERC-20 token support (USDC, DAI, USDT, wstETH)
+- [x] Recurring deposit automation (Chainlink compatible)
 - [ ] Vault templates
-- [ ] Referral system
-- [ ] Yield integration (Aave, Compound)
+- [x] Referral system with NFT badges
+- [x] Yield integration (Aave V3, Compound V3)
 - [ ] Multi-sig vault support
-- [ ] NFT receipts for vaults
+- [x] NFT receipts for vaults with tier badges
+
+## Recent Updates (v1.2.0)
+
+### Features Added
+- **Yield Integration**: Aave V3 and Compound V3 adapters with auto-strategy selection
+- **Recurring Deposits**: Chainlink Automation compatible with retry logic
+- **Social Vaults**: Group savings with invitation system
+- **Savings Challenges**: Gamified savings competitions with prize pools
+- **Referral System**: Tiered rewards with NFT badges (Bronze→Diamond)
+- **Leaderboard**: Achievement system with 7 unlockable badges
+- **NFT Receipts**: Dynamic SVG with tier badges (Bronze/Silver/Gold/Platinum)
+
+### Security & Infrastructure
+- Emergency stop for YieldManager
+- Withdrawal delay for large amounts
+- Rate limiting with configurable thresholds
+- Batch timelock execution for governance
+
+### Tests Added
+- YieldManager, SocialVault, SavingsChallenge tests
+- RewardDistributor, VestedStaking, ReferralSystem tests
+- LeaderboardTracker, SVGRenderer tests
 
 ---
 
@@ -319,10 +341,11 @@ Built on Base
 ## Stats
 
 - **Test Coverage**: 100%
-- **Functions**: 28
-- **Lines of Code**: 520+
-- **Tests**: 58
+- **Contracts**: 100+
+- **Lines of Code**: 8000+
+- **Tests**: 70+
 - **Gas Optimized**: Yes
+- **Recent Commits**: 50 (v1.2.0 update)
 
 
 ## Community
