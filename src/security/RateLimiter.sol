@@ -77,4 +77,43 @@ contract RateLimiter {
         userAvail = _getUserAvailable(user);
         globalAvail = globalLimit.maxAmount - globalLimit.currentAmount;
     }
+
+    /// @notice Large withdrawal threshold requiring delay
+    uint256 public largeWithdrawalThreshold;
+
+    /// @notice Delay for large withdrawals (default 24 hours)
+    uint256 public withdrawalDelay = 24 hours;
+
+    /// @notice Pending large withdrawals
+    mapping(bytes32 => uint256) public pendingWithdrawals;
+
+    event LargeWithdrawalQueued(address indexed user, uint256 amount, uint256 executeAfter);
+    event WithdrawalExecuted(address indexed user, uint256 amount);
+
+    error WithdrawalNotReady(uint256 currentTime, uint256 executeAfter);
+    error WithdrawalNotFound();
+
+    /// @notice Set threshold for large withdrawals
+    function setLargeWithdrawalThreshold(uint256 threshold) external {
+        largeWithdrawalThreshold = threshold;
+    }
+
+    /// @notice Check if withdrawal requires delay
+    function requiresDelay(uint256 amount) public view returns (bool) {
+        return largeWithdrawalThreshold > 0 && amount >= largeWithdrawalThreshold;
+    }
+
+    /// @notice Queue a large withdrawal
+    function queueWithdrawal(address user, uint256 amount) external returns (bytes32 withdrawalId) {
+        withdrawalId = keccak256(abi.encodePacked(user, amount, block.timestamp));
+        uint256 executeAfter = block.timestamp + withdrawalDelay;
+        pendingWithdrawals[withdrawalId] = executeAfter;
+        emit LargeWithdrawalQueued(user, amount, executeAfter);
+    }
+
+    /// @notice Check if withdrawal can be executed
+    function canExecuteWithdrawal(bytes32 withdrawalId) external view returns (bool) {
+        uint256 executeAfter = pendingWithdrawals[withdrawalId];
+        return executeAfter > 0 && block.timestamp >= executeAfter;
+    }
 }
