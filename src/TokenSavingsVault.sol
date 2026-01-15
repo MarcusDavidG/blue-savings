@@ -9,13 +9,17 @@ import "./TokenFeeManager.sol";
 
 /**
  * @title TokenSavingsVault
+ * @author BlueSavings Team
  * @notice ERC-20 token savings vault with time-lock and goal-based savings
- * @dev Extends the base savings vault concept to support multiple tokens
+ * @dev Extends the base savings vault concept to support multiple whitelisted tokens.
+ *      Supports time-locked vaults, goal-based vaults, or hybrid combinations.
+ *      Protocol fee is configurable up to MAX_FEE_BPS (2%).
  */
 contract TokenSavingsVault is TokenWhitelist, TokenVaultStorage, TokenFeeManager {
     using SafeERC20 for IERC20;
 
     /// @notice Vault structure for token-based savings
+    /// @dev Each vault tracks a single goal token but can hold multiple token types
     struct TokenVault {
         address owner;
         address goalToken;
@@ -27,7 +31,9 @@ contract TokenSavingsVault is TokenWhitelist, TokenVaultStorage, TokenFeeManager
     }
 
     // Constants
+    /// @notice Maximum protocol fee in basis points (200 = 2%)
     uint256 public constant MAX_FEE_BPS = 200;
+    /// @notice Basis points denominator for fee calculations (10000 = 100%)
     uint256 public constant BPS_DENOMINATOR = 10000;
 
     // State
