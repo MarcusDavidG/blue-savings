@@ -7,7 +7,7 @@ evm_version = "cancun"
 optimizer = true
 optimizer_runs = 200
 via_ir = true
-gas_reports = ["SavingsVault"]
+gas_reports = ["SavingsVault", "TokenSavingsVault", "YieldManager", "RecurringDeposit", "VaultFactory"]
 fuzz_runs = 256
 verbosity = 2
 
