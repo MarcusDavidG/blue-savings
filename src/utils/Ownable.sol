@@ -35,7 +35,7 @@ abstract contract Ownable {
         _transferOwnership(address(0));
     }
 
-    function transferOwnership(address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) public virtual onlyOwner {
         if (newOwner == address(0)) revert OwnableInvalidOwner(address(0));
         _transferOwnership(newOwner);
     }

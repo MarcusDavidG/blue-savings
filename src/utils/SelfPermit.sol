@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+import "../interfaces/IERC20.sol";
 import "../interfaces/IERC20Permit.sol";
 
 /**
@@ -27,7 +28,7 @@ abstract contract SelfPermit {
         bytes32 r,
         bytes32 s
     ) external {
-        if (IERC20Permit(token).allowance(msg.sender, address(this)) < value) {
+        if (IERC20(token).allowance(msg.sender, address(this)) < value) {
             IERC20Permit(token).permit(msg.sender, address(this), value, deadline, v, r, s);
         }
     }

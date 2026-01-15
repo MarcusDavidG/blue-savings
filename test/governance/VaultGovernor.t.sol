@@ -23,7 +23,7 @@ contract VaultGovernorTest is Test {
         uint256 proposalId = governor.propose("Test proposal");
 
         assertEq(proposalId, 0);
-        (,address proposer,,,,,,,,) = governor.proposals(proposalId);
+        (,address proposer,,,,,,,) = governor.proposals(proposalId);
         assertEq(proposer, voter1);
     }
 
