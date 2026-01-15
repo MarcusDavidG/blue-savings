@@ -131,4 +131,52 @@ contract YieldManager {
     function getAdapters() external view returns (address[] memory) {
         return adapters;
     }
+
+    /// @notice Auto-select best yield adapter for a token
+    /// @param token Token to find best adapter for
+    /// @return adapter Best performing adapter address
+    function selectBestAdapter(address token) public view returns (address adapter) {
+        uint256 bestApy;
+        for (uint256 i = 0; i < adapters.length; i++) {
+            if (IYieldAdapter(adapters[i]).isSupported(token)) {
+                uint256 apy = IYieldAdapter(adapters[i]).getAPY(token);
+                if (apy > bestApy) {
+                    bestApy = apy;
+                    adapter = adapters[i];
+                }
+            }
+        }
+    }
+
+    /// @notice Deposit to best yielding adapter automatically
+    function depositToBestYield(address token, uint256 amount) external onlyVault {
+        address adapter = selectBestAdapter(token);
+        if (adapter == address(0)) revert NoAdapterForToken();
+
+        IERC20(token).safeTransferFrom(vault, address(this), amount);
+        IERC20(token).approve(adapter, amount);
+
+        IYieldAdapter(adapter).deposit(token, amount);
+        emit YieldDeposited(token, adapter, amount);
+    }
+
+    /// @notice Compare APYs across all adapters for a token
+    function compareAPYs(address token) external view returns (address[] memory adapterList, uint256[] memory apys) {
+        uint256 count;
+        for (uint256 i = 0; i < adapters.length; i++) {
+            if (IYieldAdapter(adapters[i]).isSupported(token)) count++;
+        }
+
+        adapterList = new address[](count);
+        apys = new uint256[](count);
+        uint256 idx;
+
+        for (uint256 i = 0; i < adapters.length; i++) {
+            if (IYieldAdapter(adapters[i]).isSupported(token)) {
+                adapterList[idx] = adapters[i];
+                apys[idx] = IYieldAdapter(adapters[i]).getAPY(token);
+                idx++;
+            }
+        }
+    }
 }
