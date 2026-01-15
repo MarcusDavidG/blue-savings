@@ -88,4 +88,36 @@ library SVGRenderer {
         }
         return string(buffer);
     }
+
+    /// @notice Generate tier badge SVG
+    function generateTierBadge(uint8 tier) internal pure returns (string memory) {
+        string memory tierName;
+        string memory color;
+
+        if (tier == 3) {
+            tierName = "PLATINUM";
+            color = "#E5E4E2";
+        } else if (tier == 2) {
+            tierName = "GOLD";
+            color = "#FFD700";
+        } else if (tier == 1) {
+            tierName = "SILVER";
+            color = "#C0C0C0";
+        } else {
+            tierName = "BRONZE";
+            color = "#CD7F32";
+        }
+
+        return string(abi.encodePacked(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">',
+            '<circle cx="100" cy="100" r="90" fill="',
+            color,
+            '" stroke="#333" stroke-width="4"/>',
+            '<text x="100" y="90" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">',
+            tierName,
+            '</text>',
+            '<text x="100" y="115" text-anchor="middle" fill="#333" font-size="12">SAVER</text>',
+            '</svg>'
+        ));
+    }
 }
