@@ -26,4 +26,15 @@ interface GlobalEvents {
     // Fee Events
     event FeeUpdated(uint256 oldFee, uint256 newFee);
     event FeesCollected(address indexed collector, uint256 amount);
+
+    // Yield Events
+    event YieldDeposited(address indexed adapter, address indexed token, uint256 amount, uint256 shares);
+    event YieldWithdrawn(address indexed adapter, address indexed token, uint256 amount, uint256 shares);
+    event YieldHarvested(address indexed adapter, uint256 amount);
+
+    // Recurring Deposit Events
+    event ScheduleCreated(uint256 indexed scheduleId, address indexed owner, uint256 amount, uint256 frequency);
+    event ScheduleExecuted(uint256 indexed scheduleId, uint256 amount);
+    event SchedulePaused(uint256 indexed scheduleId);
+    event ScheduleResumed(uint256 indexed scheduleId);
 }
