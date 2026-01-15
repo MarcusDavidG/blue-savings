@@ -14,4 +14,8 @@ library Limits {
     uint256 public constant MIN_DEPOSIT = 0.001 ether;
     uint256 public constant MAX_BATCH_SIZE = 50;
     uint256 public constant MAX_SCHEDULES_PER_USER = 10;
+    uint256 public constant MAX_YIELD_ADAPTERS = 20;
+    uint256 public constant MAX_REFERRAL_TIERS = 5;
+    uint256 public constant MAX_GROUP_VAULT_MEMBERS = 50;
+    uint256 public constant MAX_PENDING_INVITES = 100;
 }
