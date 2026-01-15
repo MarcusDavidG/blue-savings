@@ -86,4 +86,40 @@ contract StakingRewards {
         lastUpdateTime = block.timestamp;
         rewardRate = _rewardRate;
     }
+
+    /// @notice Compound rewards by restaking
+    function compoundReward() external updateReward(msg.sender) {
+        uint256 reward = rewards[msg.sender];
+        require(reward > 0, "No rewards");
+        require(address(rewardsToken) == address(stakingToken), "Cannot compound different tokens");
+
+        rewards[msg.sender] = 0;
+        totalSupply += reward;
+        balanceOf[msg.sender] += reward;
+
+        emit RewardPaid(msg.sender, reward);
+        emit Staked(msg.sender, reward);
+    }
+
+    /// @notice Exit: withdraw all and claim rewards
+    function exit() external {
+        withdraw(balanceOf[msg.sender]);
+        uint256 reward = rewards[msg.sender];
+        if (reward > 0) {
+            rewards[msg.sender] = 0;
+            rewardsToken.safeTransfer(msg.sender, reward);
+            emit RewardPaid(msg.sender, reward);
+        }
+    }
+
+    /// @notice Get staking stats for user
+    function getUserStats(address user) external view returns (
+        uint256 staked,
+        uint256 pendingRewards,
+        uint256 shareOfPool
+    ) {
+        staked = balanceOf[user];
+        pendingRewards = earned(user);
+        shareOfPool = totalSupply > 0 ? (staked * 10000) / totalSupply : 0;
+    }
 }
