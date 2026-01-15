@@ -85,4 +85,24 @@ abstract contract TokenWhitelist {
     function getWhitelistedTokenCount() external view returns (uint256) {
         return whitelistedTokens.length;
     }
+
+    /// @notice Internal function to whitelist multiple tokens at once
+    /// @param tokens Array of token addresses to whitelist
+    function _batchWhitelistTokens(address[] calldata tokens) internal {
+        uint256 length = tokens.length;
+        for (uint256 i = 0; i < length;) {
+            _whitelistToken(tokens[i]);
+            unchecked { ++i; }
+        }
+    }
+
+    /// @notice Internal function to delist multiple tokens at once
+    /// @param tokens Array of token addresses to delist
+    function _batchDelistTokens(address[] calldata tokens) internal {
+        uint256 length = tokens.length;
+        for (uint256 i = 0; i < length;) {
+            _delistToken(tokens[i]);
+            unchecked { ++i; }
+        }
+    }
 }
