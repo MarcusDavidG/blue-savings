@@ -25,25 +25,31 @@ library BaseTokenAddresses {
     /// @notice AERO token on Base (18 decimals)
     address public constant AERO = 0x940181a94A35A4569E4529A3CDfB74e38FD98631;
 
+    /// @notice USDT on Base (6 decimals)
+    address public constant USDT = 0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2;
+
+    /// @notice wstETH on Base (18 decimals)
+    address public constant wstETH = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452;
+
     /// @notice Check if token is a known stablecoin
     /// @param token The address of the token to check
     /// @return bool True if the token is a stablecoin, false otherwise
     function isStablecoin(address token) internal pure returns (bool) {
-        return token == USDC || token == DAI || token == USDbC;
+        return token == USDC || token == DAI || token == USDbC || token == USDT;
     }
 
     /// @notice Check if token is wrapped ETH derivative
     /// @param token The address of the token to check
     /// @return bool True if the token is a WETH derivative, false otherwise
     function isWethDerivative(address token) internal pure returns (bool) {
-        return token == WETH || token == cbETH;
+        return token == WETH || token == cbETH || token == wstETH;
     }
 
     /// @notice Get expected decimals for known tokens
     /// @param token The address of the token to check
     /// @return uint8 The number of decimals for the token
     function getDecimals(address token) internal pure returns (uint8) {
-        if (token == USDC || token == USDbC) return 6;
+        if (token == USDC || token == USDbC || token == USDT) return 6;
         return 18; // Default for most tokens
     }
 }
