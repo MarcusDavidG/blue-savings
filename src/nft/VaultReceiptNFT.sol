@@ -46,7 +46,14 @@ contract VaultReceiptNFT is IERC721Metadata {
         uint256 goalAmount;
         uint256 unlockTimestamp;
         uint256 createdAt;
+        string vaultName;
+        uint8 tier; // 0=Bronze, 1=Silver, 2=Gold, 3=Platinum
     }
+
+    /// @notice Achievement thresholds for tier upgrades
+    uint256 public constant SILVER_THRESHOLD = 1 ether;
+    uint256 public constant GOLD_THRESHOLD = 10 ether;
+    uint256 public constant PLATINUM_THRESHOLD = 100 ether;
 
     // Errors
     error Unauthorized();
@@ -95,7 +102,9 @@ contract VaultReceiptNFT is IERC721Metadata {
             initialDeposit: initialDeposit,
             goalAmount: goalAmount,
             unlockTimestamp: unlockTimestamp,
-            createdAt: block.timestamp
+            createdAt: block.timestamp,
+            vaultName: "",
+            tier: _calculateTier(goalAmount)
         });
 
         emit Transfer(address(0), to, tokenId);
@@ -215,5 +224,27 @@ contract VaultReceiptNFT is IERC721Metadata {
             value /= 10;
         }
         return string(buffer);
+    }
+
+    /// @notice Calculate tier based on amount
+    function _calculateTier(uint256 amount) internal pure returns (uint8) {
+        if (amount >= PLATINUM_THRESHOLD) return 3;
+        if (amount >= GOLD_THRESHOLD) return 2;
+        if (amount >= SILVER_THRESHOLD) return 1;
+        return 0;
+    }
+
+    /// @notice Get tier name
+    function getTierName(uint8 tier) external pure returns (string memory) {
+        if (tier == 3) return "Platinum";
+        if (tier == 2) return "Gold";
+        if (tier == 1) return "Silver";
+        return "Bronze";
+    }
+
+    /// @notice Update vault name
+    function setVaultName(uint256 tokenId, string calldata newName) external {
+        if (_owners[tokenId] != msg.sender) revert NotOwnerOrApproved();
+        vaultMetadata[tokenId].vaultName = newName;
     }
 }
