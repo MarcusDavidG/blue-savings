@@ -16,14 +16,15 @@ contract YieldManagerTest is Test {
         vault = makeAddr("vault");
         manager = new YieldManager(vault);
         token = new MockERC20("Test", "TST", 18);
-        adapter = new MockYieldAdapter(address(manager));
+        adapter = new MockYieldAdapter();
+        adapter.setSupported(address(token), true);
 
         manager.addAdapter(address(adapter));
         manager.setPreferredAdapter(address(token), address(adapter));
     }
 
     function test_AddAdapter() public {
-        MockYieldAdapter newAdapter = new MockYieldAdapter(address(manager));
+        MockYieldAdapter newAdapter = new MockYieldAdapter();
         manager.addAdapter(address(newAdapter));
 
         address[] memory adapters = manager.getAdapters();

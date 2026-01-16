@@ -84,6 +84,8 @@ contract VaultReceiptNFTTest is Test {
             uint256 initialDeposit,
             uint256 goalAmount,
             uint256 unlockTimestamp,
+            ,
+            ,
         ) = nft.vaultMetadata(tokenId);
 
         assertEq(vaultId, 42);

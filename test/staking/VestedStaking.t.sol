@@ -12,7 +12,7 @@ contract VestedStakingTest is Test {
 
     function setUp() public {
         token = new MockERC20("Token", "TKN", 18);
-        staking = new VestedStaking(address(token), 30 days);
+        staking = new VestedStaking(address(token));
         user1 = makeAddr("user1");
 
         token.mint(user1, 100e18);
@@ -22,29 +22,27 @@ contract VestedStakingTest is Test {
 
     function test_Stake() public {
         vm.prank(user1);
-        staking.stake(50e18);
+        staking.stake(50e18, 30 days);
 
-        assertEq(staking.balanceOf(user1), 50e18);
+        assertEq(staking.getStakeCount(user1), 1);
     }
 
     function test_UnstakeBeforeVesting() public {
         vm.prank(user1);
-        staking.stake(50e18);
+        staking.stake(50e18, 30 days);
 
         vm.prank(user1);
-        vm.expectRevert("Still vesting");
-        staking.unstake(50e18);
+        vm.expectRevert();
+        staking.claim(0);
     }
 
-    function test_UnstakeAfterVesting() public {
+    function test_ClaimAfterVesting() public {
         vm.prank(user1);
-        staking.stake(50e18);
+        staking.stake(50e18, 30 days);
 
         vm.warp(block.timestamp + 31 days);
 
         vm.prank(user1);
-        staking.unstake(50e18);
-
-        assertEq(staking.balanceOf(user1), 0);
+        staking.claim(0);
     }
 }

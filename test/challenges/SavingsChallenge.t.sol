@@ -21,7 +21,7 @@ contract SavingsChallengeTest is Test {
         uint256 id = challenge.createChallenge{value: 1 ether}("30 Day Challenge", 1 ether, 30 days);
         assertEq(id, 0);
 
-        (string memory name,,,,,) = challenge.challenges(id);
+        (string memory name,,,,,,) = challenge.challenges(id);
         assertEq(name, "30 Day Challenge");
     }
 

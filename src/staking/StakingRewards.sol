@@ -102,8 +102,14 @@ contract StakingRewards {
     }
 
     /// @notice Exit: withdraw all and claim rewards
-    function exit() external {
-        withdraw(balanceOf[msg.sender]);
+    function exit() external updateReward(msg.sender) {
+        uint256 amount = balanceOf[msg.sender];
+        if (amount > 0) {
+            totalSupply -= amount;
+            balanceOf[msg.sender] = 0;
+            stakingToken.safeTransfer(msg.sender, amount);
+            emit Withdrawn(msg.sender, amount);
+        }
         uint256 reward = rewards[msg.sender];
         if (reward > 0) {
             rewards[msg.sender] = 0;

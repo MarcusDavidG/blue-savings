@@ -33,26 +33,26 @@ library VaultMath {
         if (lockDays >= maxLockDays) return baseAPY + bonusAPY;
         return baseAPY + (bonusAPY * lockDays) / maxLockDays;
     }
-}
 
-/// @notice Calculate compound interest
-function calculateCompoundInterest(
-    uint256 principal,
-    uint256 rate, // in basis points
-    uint256 periods
-) internal pure returns (uint256) {
-    uint256 amount = principal;
-    for (uint256 i = 0; i < periods; i++) {
-        amount = amount + (amount * rate) / BPS_DENOMINATOR;
+    /// @notice Calculate compound interest
+    function calculateCompoundInterest(
+        uint256 principal,
+        uint256 rate,
+        uint256 periods
+    ) internal pure returns (uint256) {
+        uint256 amount = principal;
+        for (uint256 i = 0; i < periods; i++) {
+            amount = amount + (amount * rate) / BPS;
+        }
+        return amount;
     }
-    return amount;
-}
 
-/// @notice Calculate simple interest
-function calculateSimpleInterest(
-    uint256 principal,
-    uint256 rate, // in basis points
-    uint256 periods
-) internal pure returns (uint256) {
-    return principal + (principal * rate * periods) / BPS_DENOMINATOR;
+    /// @notice Calculate simple interest
+    function calculateSimpleInterest(
+        uint256 principal,
+        uint256 rate,
+        uint256 periods
+    ) internal pure returns (uint256) {
+        return principal + (principal * rate * periods) / BPS;
+    }
 }

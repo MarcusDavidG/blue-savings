@@ -19,7 +19,7 @@ contract ReferralSystemTest is Test {
         vm.prank(referrer1);
         referral.registerAsReferrer(bytes32("CODE1"));
 
-        (bytes32 code,,,,,,,) = referral.referrers(referrer1);
+        (bytes32 code,,,,,,) = referral.referrers(referrer1);
         assertEq(code, bytes32("CODE1"));
     }
 

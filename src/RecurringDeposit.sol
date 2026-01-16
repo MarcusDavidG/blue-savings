@@ -105,7 +105,9 @@ contract RecurringDeposit is
             totalExecutions: totalExecutions,
             executedCount: 0,
             status: ScheduleStatus.Active,
-            createdAt: block.timestamp
+            createdAt: block.timestamp,
+            failedAttempts: 0,
+            lastFailureTime: 0
         });
 
         userSchedules[msg.sender].push(scheduleId);
