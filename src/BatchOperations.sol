@@ -1,78 +1,239 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+import "./libraries/GasOptimizer.sol";
+
 /**
  * @title BatchOperations
- * @notice Batch operation utilities for vault operations
- * @dev Abstract contract for multi-token batch processing
+ * @dev Efficient batch operations for multiple vault interactions
  */
-abstract contract BatchOperations {
-    /// @notice Maximum tokens per batch operation
-    uint256 public constant MAX_BATCH_SIZE = 20;
-
-    /// @notice Thrown when batch arrays have different lengths
-    error BatchArrayLengthMismatch();
-
-    /// @notice Thrown when batch is empty
-    error EmptyBatch();
-
-    /// @notice Thrown when batch exceeds maximum size
-    error BatchSizeTooLarge(uint256 size);
-
-    /**
-     * @notice Validate batch operation parameters for operations involving tokens and amounts.
-     * @dev This modifier ensures that the input arrays are not empty, have matching lengths,
-     * and do not exceed the maximum batch size.
-     * @param tokens Array of token addresses.
-     * @param amounts Array of amounts corresponding to each token.
-     */
-    modifier validBatch(address[] calldata tokens, uint256[] calldata amounts) {
-        if (tokens.length == 0) revert EmptyBatch();
-        if (tokens.length != amounts.length) revert BatchArrayLengthMismatch();
-        if (tokens.length > MAX_BATCH_SIZE) revert BatchSizeTooLarge(tokens.length);
-        _;
-    }
-
-    /**
-     * @notice Validate single array batch for operations involving a single array of items.
-     * @dev This modifier ensures that the input array is not empty and does not exceed the maximum batch size.
-     * @param items Array to validate.
-     */
-    modifier validSingleBatch(address[] calldata items) {
-        if (items.length == 0) revert EmptyBatch();
-        if (items.length > MAX_BATCH_SIZE) revert BatchSizeTooLarge(items.length);
-        _;
-    }
-
-    /// @notice Batch operation result
+contract BatchOperations {
+    using GasOptimizer for uint256[];
+    
+    address public immutable savingsVault;
+    address public owner;
+    
     struct BatchResult {
         uint256 successCount;
-        uint256 failCount;
-        bool[] results;
+        uint256 failureCount;
+        uint256 totalGasUsed;
+        bytes[] results;
     }
-
-    /// @notice Execute batch with failure tolerance
-    function _executeBatchWithTolerance(
-        address[] calldata targets,
-        bytes[] calldata datas,
-        bool allowFailures
-    ) internal returns (BatchResult memory result) {
-        require(targets.length == datas.length, "Length mismatch");
-
-        result.results = new bool[](targets.length);
-
-        for (uint256 i = 0; i < targets.length; i++) {
-            (bool success,) = targets[i].call(datas[i]);
-            result.results[i] = success;
-
-            if (success) {
+    
+    event BatchDepositCompleted(uint256 successCount, uint256 failureCount);
+    event BatchWithdrawCompleted(uint256 successCount, uint256 failureCount);
+    event BatchCreateCompleted(uint256 successCount, uint256 failureCount);
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorized");
+        _;
+    }
+    
+    constructor(address _savingsVault) {
+        savingsVault = _savingsVault;
+        owner = msg.sender;
+    }
+    
+    /**
+     * @dev Batch deposit to multiple vaults
+     */
+    function batchDeposit(
+        uint256[] calldata vaultIds,
+        uint256[] calldata amounts
+    ) external payable returns (BatchResult memory result) {
+        require(vaultIds.length == amounts.length, "Array length mismatch");
+        GasOptimizer.validateBatch(vaultIds.length);
+        GasOptimizer.checkGasRequirement(vaultIds.length);
+        
+        uint256 totalAmount = amounts.sumArray();
+        require(msg.value >= totalAmount, "Insufficient ETH sent");
+        
+        result.results = new bytes[](vaultIds.length);
+        uint256 gasStart = gasleft();
+        
+        for (uint256 i = 0; i < vaultIds.length;) {
+            try this.singleDeposit{value: amounts[i]}(vaultIds[i]) {
                 result.successCount++;
-            } else {
-                result.failCount++;
-                if (!allowFailures) {
-                    revert("Batch operation failed");
-                }
+                result.results[i] = abi.encode(true, "Success");
+            } catch Error(string memory reason) {
+                result.failureCount++;
+                result.results[i] = abi.encode(false, reason);
+            } catch {
+                result.failureCount++;
+                result.results[i] = abi.encode(false, "Unknown error");
             }
+            
+            unchecked { ++i; }
         }
+        
+        result.totalGasUsed = gasStart - gasleft();
+        
+        // Refund excess ETH
+        uint256 refund = msg.value - totalAmount;
+        if (refund > 0) {
+            payable(msg.sender).transfer(refund);
+        }
+        
+        emit BatchDepositCompleted(result.successCount, result.failureCount);
+    }
+    
+    /**
+     * @dev Batch withdraw from multiple vaults
+     */
+    function batchWithdraw(
+        uint256[] calldata vaultIds
+    ) external returns (BatchResult memory result) {
+        GasOptimizer.validateBatch(vaultIds.length);
+        GasOptimizer.checkGasRequirement(vaultIds.length);
+        
+        result.results = new bytes[](vaultIds.length);
+        uint256 gasStart = gasleft();
+        
+        for (uint256 i = 0; i < vaultIds.length;) {
+            try this.singleWithdraw(vaultIds[i]) {
+                result.successCount++;
+                result.results[i] = abi.encode(true, "Success");
+            } catch Error(string memory reason) {
+                result.failureCount++;
+                result.results[i] = abi.encode(false, reason);
+            } catch {
+                result.failureCount++;
+                result.results[i] = abi.encode(false, "Unknown error");
+            }
+            
+            unchecked { ++i; }
+        }
+        
+        result.totalGasUsed = gasStart - gasleft();
+        emit BatchWithdrawCompleted(result.successCount, result.failureCount);
+    }
+    
+    /**
+     * @dev Batch create multiple vaults
+     */
+    function batchCreateVaults(
+        uint256[] calldata goalAmounts,
+        uint256[] calldata unlockTimestamps,
+        string[] calldata names,
+        string[] calldata descriptions
+    ) external returns (BatchResult memory result) {
+        require(
+            goalAmounts.length == unlockTimestamps.length &&
+            unlockTimestamps.length == names.length &&
+            names.length == descriptions.length,
+            "Array length mismatch"
+        );
+        
+        GasOptimizer.validateBatch(goalAmounts.length);
+        GasOptimizer.checkGasRequirement(goalAmounts.length);
+        
+        result.results = new bytes[](goalAmounts.length);
+        uint256 gasStart = gasleft();
+        
+        for (uint256 i = 0; i < goalAmounts.length;) {
+            try this.singleCreateVault(
+                goalAmounts[i],
+                unlockTimestamps[i],
+                names[i],
+                descriptions[i]
+            ) returns (uint256 vaultId) {
+                result.successCount++;
+                result.results[i] = abi.encode(true, vaultId);
+            } catch Error(string memory reason) {
+                result.failureCount++;
+                result.results[i] = abi.encode(false, reason);
+            } catch {
+                result.failureCount++;
+                result.results[i] = abi.encode(false, "Unknown error");
+            }
+            
+            unchecked { ++i; }
+        }
+        
+        result.totalGasUsed = gasStart - gasleft();
+        emit BatchCreateCompleted(result.successCount, result.failureCount);
+    }
+    
+    /**
+     * @dev Single deposit operation (internal)
+     */
+    function singleDeposit(uint256 vaultId) external payable {
+        require(msg.sender == address(this), "Internal function");
+        
+        (bool success,) = savingsVault.call{value: msg.value}(
+            abi.encodeWithSignature("deposit(uint256)", vaultId)
+        );
+        require(success, "Deposit failed");
+    }
+    
+    /**
+     * @dev Single withdraw operation (internal)
+     */
+    function singleWithdraw(uint256 vaultId) external {
+        require(msg.sender == address(this), "Internal function");
+        
+        (bool success,) = savingsVault.call(
+            abi.encodeWithSignature("withdraw(uint256)", vaultId)
+        );
+        require(success, "Withdraw failed");
+    }
+    
+    /**
+     * @dev Single vault creation (internal)
+     */
+    function singleCreateVault(
+        uint256 goalAmount,
+        uint256 unlockTimestamp,
+        string memory name,
+        string memory description
+    ) external returns (uint256) {
+        require(msg.sender == address(this), "Internal function");
+        
+        (bool success, bytes memory data) = savingsVault.call(
+            abi.encodeWithSignature(
+                "createVault(uint256,uint256,string,string)",
+                goalAmount,
+                unlockTimestamp,
+                name,
+                description
+            )
+        );
+        require(success, "Create vault failed");
+        
+        return abi.decode(data, (uint256));
+    }
+    
+    /**
+     * @dev Get optimal batch size for current gas conditions
+     */
+    function getOptimalBatchSize() external view returns (uint256) {
+        return GasOptimizer.calculateOptimalBatchSize(gasleft());
+    }
+    
+    /**
+     * @dev Estimate gas for batch operations
+     */
+    function estimateBatchGas(uint256 operationCount) external pure returns (uint256) {
+        return operationCount * 100000; // Rough estimate per operation
+    }
+    
+    /**
+     * @dev Emergency function to recover stuck ETH
+     */
+    function emergencyWithdraw() external onlyOwner {
+        payable(owner).transfer(address(this).balance);
+    }
+    
+    /**
+     * @dev Update savings vault address (if needed)
+     */
+    function updateSavingsVault(address newVault) external onlyOwner {
+        require(newVault != address(0), "Invalid address");
+        // Note: This would require making savingsVault mutable
+        // For now, it's immutable for security
+    }
+    
+    receive() external payable {
+        // Allow contract to receive ETH
     }
 }
