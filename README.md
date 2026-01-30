@@ -57,6 +57,23 @@ This project uses **manual dependency management** instead of automated bots. De
 - **Network**: Base Sepolia (Chain ID: 84532)
 - **Purpose**: Testing and development
 
+### Additional Mainnet Contracts (v1.2.0)
+
+| Contract | Address | Purpose |
+|----------|---------|---------|
+| SocialVault | `PENDING` | Group savings with friends/family |
+| SavingsChallenge | `PENDING` | Gamified savings competitions |
+| LeaderboardTracker | `PENDING` | Track top savers and achievements |
+| MultiSigVault | `PENDING` | Multi-signature vault withdrawals |
+| VaultDelegation | `PENDING` | Delegate vault management |
+| ChainlinkPriceFeed | `PENDING` | Price oracle integration |
+| VaultSnapshot | `PENDING` | Historical balance snapshots |
+| ContractRegistry | `PENDING` | Protocol contract registry |
+| YieldManager | `PENDING` | Yield strategy management |
+| VaultFactory | `PENDING` | Create new vault instances |
+
+*Addresses will be updated after mainnet deployment*
+
 ### Contract Verification
 Both contracts are verified on BaseScan. You can:
 - View source code
